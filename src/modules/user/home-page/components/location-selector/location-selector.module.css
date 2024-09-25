@@ -1,0 +1,209 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensures even spacing between boxes and button */
+    gap: 44px; /* Consistent gap between items */
+    padding: 12px 64px;
+    box-sizing: border-box; /* Include padding in width calculations */
+  }
+  
+  .formGroup {
+    width: 100%;
+    max-width: 582px;
+    height: 132px;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Ensure padding and border are part of the total width */
+  }
+  
+  .section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  
+  .labelContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .radioIndicator {
+    width: 8px;
+    height: 8px;
+    background-color: #3461ff;
+    border-radius: 50%;
+  }
+  
+  .radioIndicator2 {
+    transform: translateX(-20px);
+    width: 16px;
+    height: 16px;
+    background-color: #3563e9;
+    opacity: 0.3;
+    border-radius: 50%;
+  }
+  
+  .boldText {
+    font-weight: bold;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .formFields {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input {
+    padding: 0.4rem;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.85rem;
+    color: #333;
+    width: 100%;
+    max-width: 130px;
+    outline: none;
+    appearance: none;
+  }
+  
+  .inputWithIcon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .inputWithIcon input {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .inputWithIcon img {
+    cursor: pointer;
+  }
+  
+  .input:focus,
+  .inputWithIcon input:focus {
+    border-bottom-color: #3461ff;
+  }
+  
+  .input::placeholder {
+    color: #aaa;
+  }
+  
+  .divider {
+    width: 2px;
+    height: 60px;
+    background-color: #ddd;
+  }
+  
+  .swapButton {
+    background-color: #3461ff;
+    border: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0; /* Prevent button from shrinking */
+  }
+  
+  .swapButton:hover {
+    background-color: #264ac5;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .container {
+      padding: 48px;
+      gap: 30px;
+      flex-direction: column; /* Stack elements vertically */
+    }
+  
+    .formGroup {
+      height: auto; /* Allow height to adjust */
+      width: 100%;
+      padding: 0.75rem;
+    }
+  
+    .input {
+      font-size: 0.8rem;
+    }
+  
+    .boldText {
+      font-size: 0.9rem;
+    }
+  
+    .divider {
+      height: 50px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 32px;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .formGroup {
+      width: 100%;
+      padding: 1rem;
+    }
+  
+    .input {
+      width: 100%;
+    }
+  
+    .swapButton {
+      width: 50px;
+      height: 50px;
+    }
+  
+    .divider {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      padding: 16px;
+      gap: 1rem;
+    }
+  
+    .formGroup {
+      padding: 0.5rem;
+    }
+  
+    .boldText {
+      font-size: 0.85rem;
+    }
+  
+    .input {
+      font-size: 0.75rem;
+      padding: 0.3rem;
+    }
+  
+    .swapButton {
+      width: 45px;
+      height: 45px;
+    }
+  }
+  
