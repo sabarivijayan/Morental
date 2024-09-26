@@ -19,20 +19,20 @@ const Navbar: React.FC = () => {
 
             <div className={styles.searchContainer}>
                 {/* Search Icon */}
-                <Image src="/search-normal.svg" alt="Search" className={styles.searchIcon} width={20} height={20} />
+                <Image src="/icons/search-normal.svg" alt="Search" className={styles.searchIcon} width={20} height={20} />
                 <input
                     type="text"
                     className={styles.searchInput}
                     placeholder="Search something here"
                 />
                 <button className={styles.filterButton}>
-                    <Image src="/filter.svg" alt="Filter" width={24} height={24} className={styles.filterIcon} />
+                    <Image src="/icons/filter.svg" alt="Filter" width={24} height={24} className={styles.filterIcon} />
                 </button>
             </div>
 
             <div className={styles.actions}>
                 <button className={styles.settingsButton}>
-                    <Image src="/setting-2.svg" alt="Settings" className={styles.settingsIcon} width={20} height={20} />
+                    <Image src="/icons/setting-2.svg" alt="Settings" className={styles.settingsIcon} width={20} height={20} />
                 </button>
                 <button className={styles.signupButton} onClick={handleSignUp}>Sign up</button>
             </div>

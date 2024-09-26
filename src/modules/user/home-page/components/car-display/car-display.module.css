@@ -1,0 +1,105 @@
+/* Base Styles */
+.homeContainer {
+    padding: 36px 64px; /* Consistent 64px padding on left and right */
+}
+
+.sectionTitle {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+/* Swiper is visible for smaller screens by default */
+.swiperContainer {
+    display: block;
+    width: 100%;
+    margin: 0 auto; /* Center the Swiper */
+}
+
+/* Center the card inside the Swiper */
+.swiper-slide {
+    display: flex;
+    justify-content: center; /* Center the card horizontally */
+}
+
+/* Hide grid by default */
+.carGrid {
+    display: none;
+}
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Adjust spacing as needed */
+}
+
+.viewAllLink {
+    color: #3461ff;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.viewAllLink:hover {
+    color: #264ac5;
+}
+
+.arrow {
+    margin-left: 0.5rem;
+    transition: margin-left 0.3s ease;
+}
+
+.viewAllLink:hover .arrow {
+    margin-left: 1rem; /* Move the arrow slightly to the right on hover */
+}
+
+/* Large screens (Desktop and above, grid layout visible) */
+@media (min-width: 1024px) {
+    .swiperContainer {
+        display: none; /* Hide Swiper on large screens */
+    }
+
+    .carGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(304px, 1fr));
+        gap: 32px; /* Show the grid layout */
+    }
+
+    .homeContainer {
+        padding: 36px 64px; /* Maintain 64px padding on both sides */
+    }
+
+    .sectionTitle {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+/* Medium screens (Tablets and small desktops) */
+@media (max-width: 768px) {
+    .homeContainer {
+        padding: 36px 64px; /* Keep 64px padding on left and right */
+    }
+
+    .sectionTitle {
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+}
+
+/* Extra small screens (Phones) */
+@media (max-width: 480px) {
+    .homeContainer {
+        padding: 36px 64px; /* Keep 64px padding on left and right */
+    }
+
+    .sectionTitle {
+        font-size: 16px;
+        margin-bottom: 16px;
+    }
+}

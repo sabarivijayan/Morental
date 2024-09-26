@@ -66,12 +66,12 @@
 
 /* Specific background for the first card */
 .cardOne {
-    background-image: url('/Ads 1.svg');
+    background-image: url('/icons/Ads 1.svg');
 }
 
 /* Specific background for the second card */
 .cardTwo {
-    background-image: url('/Ads 2.svg');
+    background-image: url('/icons/Ads 2.svg');
 }
 
 /* Styling buttons differently */

@@ -50,7 +50,7 @@ const PickupForm: React.FC = () => {
 
       {/* Swap Button */}
       <button className={styles.swapButton}>
-        <Image src="/Swap.svg" alt="Swap Arrows" width={24} height={24} />
+        <Image src="/icons/Swap.svg" alt="Swap Arrows" width={24} height={24} />
       </button>
 
       {/* Drop-Off Section */}

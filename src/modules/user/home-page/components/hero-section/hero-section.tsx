@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
                 </div>
                 <div className={styles.carImageWrapper}>
                     <Image
-                        src="/image 7.svg"
+                        src="/icons/image 7.svg"
                         alt="White Car"
                         width={400}
                         height={200}
@@ -35,7 +35,7 @@ const Hero: React.FC = () => {
                 </div>
                 <div className={styles.carImageWrapper}>
                     <Image
-                        src="/image 8.svg"
+                        src="/icons/image 8.svg"
                         alt="Black Car"
                         width={400}
                         height={200}

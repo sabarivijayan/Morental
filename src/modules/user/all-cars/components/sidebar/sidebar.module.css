@@ -1,0 +1,114 @@
+/* Base Styles */
+.sidebar {
+    width: 250px;
+    padding: 16px;
+    border-right: 1px solid #eaeaea;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  
+  .filterSection {
+    margin-bottom: 24px;
+  }
+  
+  .sectionTitle {
+    font-size: 14px;
+    font-weight: bold;
+    color: #90A3BF;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  
+  .filterLabel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #1B1D21;
+  }
+  
+  .filterLabel input {
+    margin-right: 8px;
+  }
+  
+  .count {
+    color: #90A3BF;
+    font-size: 12px;
+  }
+  
+  .priceRange {
+    width: 100%;
+    margin-top: 12px;
+  }
+  
+  .priceLabel {
+    font-size: 14px;
+    color: #1B1D21;
+    text-align: right;
+    margin-top: 8px;
+  }
+  
+  /* Responsive Styling */
+  
+  /* Tablets */
+  @media (max-width: 1024px) {
+    .sidebar {
+      width: 220px;
+      padding: 12px;
+    }
+    
+    .sectionTitle {
+      font-size: 13px;
+    }
+  
+    .filterLabel {
+      font-size: 13px;
+    }
+  
+    .priceLabel {
+      font-size: 13px;
+    }
+  }
+  
+  /* Mobile */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid #eaeaea;
+      padding: 12px 16px;
+    }
+  
+    .sectionTitle {
+      font-size: 12px;
+    }
+  
+    .filterLabel {
+      font-size: 12px;
+    }
+  
+    .priceLabel {
+      font-size: 12px;
+    }
+  }
+  
+  /* Small Mobile */
+  @media (max-width: 480px) {
+    .sidebar {
+      width: 100%;
+      padding: 8px 12px;
+    }
+  
+    .sectionTitle {
+      font-size: 11px;
+    }
+  
+    .filterLabel {
+      font-size: 11px;
+    }
+  
+    .priceLabel {
+      font-size: 11px;
+    }
+  }
+  
