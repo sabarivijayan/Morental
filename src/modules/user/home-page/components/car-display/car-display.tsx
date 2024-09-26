@@ -11,9 +11,13 @@ import { useRouter } from "next/navigation";
 const CarDisplay = () => {
   const router = useRouter(); // Initialize router
 
+  // Limit the number of displayed cars to the first 12
+  const displayedCars = cars.slice(0, 12);
+
   const handleViewAllClick = () => {
     router.push("/all-cars"); // Redirect to the all cars page
   };
+
   return (
     <div className={styles.homeContainer}>
       <div className={styles.headerContainer}>
@@ -22,6 +26,7 @@ const CarDisplay = () => {
           View All <span className={styles.arrow}>→</span>
         </div>
       </div>
+
       {/* Use SwiperJS for small screens */}
       <div className={styles.swiperContainer}>
         <Swiper
@@ -48,7 +53,7 @@ const CarDisplay = () => {
             },
           }}
         >
-          {cars.map((car, index) => (
+          {displayedCars.map((car, index) => (
             <SwiperSlide key={index}>
               <CarCard {...car} />
             </SwiperSlide>
@@ -58,7 +63,7 @@ const CarDisplay = () => {
 
       {/* Grid layout for larger screens */}
       <div className={styles.carGrid}>
-        {cars.map((car, index) => (
+        {displayedCars.map((car, index) => (
           <CarCard key={index} {...car} />
         ))}
       </div>

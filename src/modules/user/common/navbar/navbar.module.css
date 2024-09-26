@@ -1,3 +1,4 @@
+/* Base Styles */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -106,7 +107,76 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+
+/* Extra Large Screens (Desktops > 1440px) */
+@media (min-width: 1440px) {
+    .navbar {
+        padding: 20px 40px;
+    }
+
+    .logo {
+        font-size: 28px;
+        padding-left: 80px;
+    }
+
+    .searchContainer {
+        max-width: 600px;
+    }
+
+    .actions {
+        padding-right: 80px;
+    }
+}
+
+/* Large Screens (Desktops > 1024px) */
+@media (min-width: 1024px) and (max-width: 1440px) {
+    .navbar {
+        padding: 10px 30px;
+    }
+
+    .logo {
+        font-size: 26px;
+    }
+
+    .searchContainer {
+        max-width: 500px;
+    }
+
+    .actions {
+        padding-right: 64px;
+    }
+}
+
+/* Tablets and small desktops (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        height: auto;
+        padding: 15px;
+    }
+
+    .logo {
+        font-size: 22px;
+        padding-left: 20px;
+    }
+
+    .searchContainer {
+        max-width: 70%;
+        margin-left: 0;
+    }
+
+    .actions {
+        padding-right: 20px;
+    }
+
+    .signupButton {
+        padding: 6px 14px;
+    }
+}
+
+/* Medium Mobile (481px to 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
     .navbar {
         flex-direction: column;
         height: auto;
@@ -114,6 +184,7 @@
     }
 
     .logo {
+        font-size: 20px;
         padding-left: 0;
         margin-bottom: 10px;
         text-align: center;
@@ -137,13 +208,24 @@
     }
 }
 
+/* Small Mobile (Portrait mode, 480px and below) */
 @media (max-width: 480px) {
     .navbar {
+        flex-direction: column;
+        height: auto;
         padding: 10px;
     }
 
     .logo {
-        font-size: 20px;
+        font-size: 18px;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .searchContainer {
+        max-width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
     }
 
     .searchInput {
@@ -169,5 +251,40 @@
     .settingsButton {
         margin-right: 0;
         margin-bottom: 10px;
+    }
+}
+
+/* Extra Small Mobile (320px and below) */
+@media (max-width: 320px) {
+    .navbar {
+        padding: 8px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+    .searchContainer {
+        padding: 6px;
+        height: 36px;
+    }
+
+    .searchInput {
+        font-size: 12px;
+    }
+
+    .signupButton {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .settingsButton {
+        width: 36px;
+        height: 36px;
+    }
+
+    .settingsIcon {
+        width: 16px;
+        height: 16px;
     }
 }

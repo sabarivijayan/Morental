@@ -1,114 +1,155 @@
 /* Base Styles */
 .sidebar {
+  padding: 16px;
+  border-right: 1px solid #eaeaea;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 75%;
+  background-color: #fff;
+  z-index: 999; /* Ensure it sits above the other content */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: translateX(-100%); /* Hidden by default */
+  opacity: 0;
+}
+
+.filterSection {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: bold;
+  color: #90a3bf;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.filterLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #1b1d21;
+}
+
+.filterLabel input {
+  margin-right: 8px;
+}
+
+.count {
+  color: #90a3bf;
+  font-size: 12px;
+}
+
+.priceRange {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.priceLabel {
+  font-size: 14px;
+  color: #1b1d21;
+  text-align: right;
+  margin-top: 8px;
+}
+
+/* Filter icon button */
+.filterIcon {
+  display: none;
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background-color: #3461ff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* Sidebar hidden by default */
+.hidden {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* Sidebar visible when active */
+.active {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Close button inside sidebar */
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Sidebar Content - prevents closing when clicking inside */
+.sidebarContent {
+  height: 100%;
+}
+
+/* Responsive Styling */
+
+/* Large screens (Desktops) */
+@media (min-width: 1024px) {
+  .sidebar {
+    transform: translateX(0); /* Ensure sidebar is visible on large screens */
+    opacity: 1;
+    position: sticky; /* Sticky on larger screens */
+    top: 0;
+    left: 0;
     width: 250px;
-    padding: 16px;
+    height: 100vh;
+  }
+
+  .filterIcon {
+    display: none; /* Hide filter icon on large screens */
+  }
+
+  .closeButton {
+    display: none; /* No close button needed on desktop */
+  }
+}
+
+/* Tablets and mobile screens */
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 75%;
+    height: 100%;
+    z-index: 999;
+    background-color: #fff;
     border-right: 1px solid #eaeaea;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    /* Hidden by default */
+    opacity: 1;
   }
-  
-  .filterSection {
-    margin-bottom: 24px;
+
+  .filterIcon {
+    display: block; /* Show filter icon */
   }
-  
-  .sectionTitle {
-    font-size: 14px;
-    font-weight: bold;
-    color: #90A3BF;
-    text-transform: uppercase;
-    margin-bottom: 12px;
+}
+
+/* Small Mobile (Portrait mode) */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100%; /* Sidebar takes up full width on small mobile */
   }
-  
-  .filterLabel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #1B1D21;
+
+  .filterIcon {
+    bottom: 12px; /* Adjust position */
+    right: 12px;
   }
-  
-  .filterLabel input {
-    margin-right: 8px;
-  }
-  
-  .count {
-    color: #90A3BF;
-    font-size: 12px;
-  }
-  
-  .priceRange {
-    width: 100%;
-    margin-top: 12px;
-  }
-  
-  .priceLabel {
-    font-size: 14px;
-    color: #1B1D21;
-    text-align: right;
-    margin-top: 8px;
-  }
-  
-  /* Responsive Styling */
-  
-  /* Tablets */
-  @media (max-width: 1024px) {
-    .sidebar {
-      width: 220px;
-      padding: 12px;
-    }
-    
-    .sectionTitle {
-      font-size: 13px;
-    }
-  
-    .filterLabel {
-      font-size: 13px;
-    }
-  
-    .priceLabel {
-      font-size: 13px;
-    }
-  }
-  
-  /* Mobile */
-  @media (max-width: 768px) {
-    .sidebar {
-      width: 100%;
-      border-right: none;
-      border-bottom: 1px solid #eaeaea;
-      padding: 12px 16px;
-    }
-  
-    .sectionTitle {
-      font-size: 12px;
-    }
-  
-    .filterLabel {
-      font-size: 12px;
-    }
-  
-    .priceLabel {
-      font-size: 12px;
-    }
-  }
-  
-  /* Small Mobile */
-  @media (max-width: 480px) {
-    .sidebar {
-      width: 100%;
-      padding: 8px 12px;
-    }
-  
-    .sectionTitle {
-      font-size: 11px;
-    }
-  
-    .filterLabel {
-      font-size: 11px;
-    }
-  
-    .priceLabel {
-      font-size: 11px;
-    }
-  }
-  
+}
