@@ -1,0 +1,220 @@
+/* Container styling */
+.paymentContainer {
+    width: 100%; /* Full width for responsiveness */
+    max-width: 752px; /* Max width to prevent stretching on larger screens */
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Ensure padding is included in width */
+  }
+  
+  /* Header with Step Info */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+  }
+  
+  .title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .stepInfo {
+    font-size: 1rem;
+    color: #888;
+  }
+  
+  .subtitle {
+    color: #888;
+    margin-bottom: 30px;
+    font-size: 1rem;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .paymentOption {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .radioInput {
+    margin-right: 10px;
+    transform: scale(1.2);
+  }
+  
+  .radioLabel {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  /* Card Logos (Visa, MasterCard) */
+  .cardLogos {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .cardLogo {
+    width: 50px;
+    margin-right: 15px;
+  }
+  
+  .cardDetails {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .cardRow {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+  }
+  
+  .cardInputGroup {
+    width: 48%;
+  }
+  
+  .cardLabel {
+    display: block;
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .cardInput {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  .paymentMessage {
+    font-size: 1rem;
+    color: #555;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  /* Responsive styling for tablet screens */
+  @media (max-width: 1024px) {
+    .paymentContainer {
+      padding: 20px; /* Reduce padding on smaller screens */
+    }
+  
+    .title {
+      font-size: 1.4rem; /* Slightly smaller title */
+    }
+  
+    .stepInfo {
+      font-size: 0.9rem; /* Adjust step info font size */
+    }
+  
+    .subtitle {
+      font-size: 0.9rem;
+    }
+  
+    .cardInputGroup {
+      width: 100%; /* Full width for card input fields on smaller screens */
+      margin-bottom: 20px; /* Add margin for better spacing */
+    }
+  
+    .cardLogos {
+      justify-content: space-between;
+      flex-wrap: wrap; /* Allow logos to wrap on smaller screens */
+    }
+  }
+  
+  /* Responsive styling for mobile screens */
+  @media (max-width: 768px) {
+    .paymentContainer {
+      padding: 15px; /* Further reduce padding for mobile */
+    }
+  
+    .title {
+      font-size: 1.2rem; /* Smaller title */
+    }
+  
+    .subtitle {
+      font-size: 0.8rem; /* Smaller subtitle */
+    }
+  
+    .stepInfo {
+      font-size: 0.8rem; /* Adjust step info font size */
+    }
+  
+    .radioLabel {
+      font-size: 0.9rem; /* Reduce font size for radio labels */
+    }
+  
+    .cardDetails {
+      padding: 15px; /* Reduce padding on card details */
+      margin-top: 15px;
+    }
+  
+    .cardInputGroup {
+      width: 100%; /* Full width for card input fields */
+    }
+  
+    .cardRow {
+      flex-direction: column; /* Stack input fields vertically */
+    }
+  
+    .cardInput {
+      padding: 10px; /* Reduce input padding */
+      font-size: 0.9rem; /* Adjust input font size */
+    }
+  
+    .paymentMessage {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Responsive styling for very small mobile screens */
+  @media (max-width: 480px) {
+    .paymentContainer {
+      padding: 10px; /* Minimal padding for very small screens */
+    }
+  
+    .title {
+      font-size: 1rem; /* Adjust title size */
+    }
+  
+    .subtitle {
+      font-size: 0.75rem; /* Smaller subtitle */
+    }
+  
+    .stepInfo {
+      font-size: 0.75rem;
+    }
+  
+    .radioLabel {
+      font-size: 0.8rem; /* Further reduce font size for radio labels */
+    }
+  
+    .cardDetails {
+      padding: 10px; /* Further reduce padding */
+    }
+  
+    .cardInput {
+      padding: 8px; /* Smaller padding for inputs */
+      font-size: 0.85rem; /* Smaller font size for inputs */
+    }
+  
+    .paymentMessage {
+      font-size: 0.85rem;
+    }
+  }
+  

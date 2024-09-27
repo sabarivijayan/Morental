@@ -1,0 +1,53 @@
+.container {
+    display: flex;
+    flex-wrap: nowrap; /* Ensure the columns stay side-by-side */
+    justify-content: space-between;
+    padding: 32px;
+    gap: 32px; /* Adds a gap between the left and right columns */
+    width: 100%;
+    box-sizing: border-box; /* Includes padding in the container width */
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+  }
+  
+  .leftColumn {
+    flex-grow: 1; /* Makes the left column take up the available space */
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px; /* Adds the 32px gap between components in the left column */
+    min-width: 60%; /* Ensures the left column doesn't shrink below this width */
+    box-sizing: border-box; /* Ensures padding/margins don't cause overflow */
+    order: 2; /* Default order: leftColumn comes second */
+  }
+  
+  .rightColumn { /* Fixed width for the right column */
+    flex-shrink: 0; /* Prevents the right column from shrinking */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns the summary to the start */
+    box-sizing: border-box; /* Prevents content overflow */
+    order: 1; /* Default order: rightColumn comes first */
+  }
+  
+  @media (max-width: 1024px) {
+    .container {
+      flex-direction: column; /* Stack columns vertically on smaller screens */
+    }
+  
+    .leftColumn, .rightColumn {
+      width: 100%; /* Make both columns take full width on smaller screens */
+      max-width: 100%; /* Ensure no overflow */
+    }
+  
+    .rightColumn {
+      margin-bottom: 32px; /* Add gap between the right column and the left column when stacked */
+    }
+  
+    .leftColumn {
+      order: 2; /* Ensures left column comes below the right column */
+    }
+  
+    .rightColumn {
+      order: 1; /* Ensures right column comes first */
+    }
+  }
+  
