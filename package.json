@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "client": "file:",
+    "clsx": "^2.1.1",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",

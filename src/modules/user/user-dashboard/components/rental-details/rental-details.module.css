@@ -1,0 +1,274 @@
+/* Container for the rental details card */
+.rentalContainer {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+  width: 100%; /* Change to 100% for responsiveness */
+  max-width: 380px; /* Limits the container's size */
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin: 0 auto; /* Centers the card on smaller screens */
+}
+
+/* Header of the rental details */
+.rentalHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.rentalTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0f1b40;
+}
+
+.carInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.carImage {
+  width: 100px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+
+.carDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.carModel {
+  font-size: 16px;
+  font-weight: bold;
+  color: #0f1b40;
+}
+
+.carType {
+  font-size: 14px;
+  color: #4a4a4a;
+}
+
+/* Divider line */
+.divider {
+  margin: 20px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Pick-Up and Drop-Off sections */
+.pickUpDropOffContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.pickUpDropOff {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.circleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  position: relative;
+}
+
+.bigCircle {
+  width: 20px;
+  height: 20px;
+  background-color: #3563E9;
+  opacity: 0.3;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.smallCircle {
+  width: 10px;
+  height: 10px;
+  background-color: #3563E9;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Aligned text with circles */
+.detailsTextContainer {
+  display: flex;
+  align-items: center; /* This ensures circles align with the text */
+}
+
+.detailsText {
+  font-size: 14px;
+  font-weight: bold;
+  color: #0f1b40;
+  margin-left: 10px; /* Small space between circles and text */
+}
+
+/* Subtext for location, date, and time */
+.subText {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4a4a4a;
+  margin-bottom: 5px;
+}
+
+.pickDropRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.pickDropColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.verticalDivider {
+  width: 1px;
+  background-color: #f0f0f0;
+  margin: 0 10px;
+  height: auto; /* Adjust height as needed */
+}
+
+/* Rental Price */
+.rentalPrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.priceText {
+  color: #0f1b40;
+  font-weight: bold;
+}
+
+.priceSubText {
+  font-size: 12px;
+  color: #b0b0b0;
+}
+
+/* RESPONSIVE MEDIA QUERIES */
+
+/* For small mobile devices (320px - 480px) */
+@media (max-width: 480px) {
+  .rentalContainer {
+    padding: 15px;
+    width: 90%; /* Ensure the container takes up most of the screen */
+    max-width: 100%; /* Remove maximum width constraint */
+  }
+
+  .rentalTitle {
+    font-size: 16px;
+  }
+
+  .carImage {
+    width: 80px;
+    height: 50px;
+  }
+
+  .carModel {
+    font-size: 14px;
+  }
+
+  .carType, .subText {
+    font-size: 12px;
+  }
+
+  .detailsText {
+    font-size: 12px;
+  }
+
+  .rentalPrice {
+    font-size: 18px;
+  }
+
+  .priceSubText {
+    font-size: 10px;
+  }
+}
+
+/* For tablets (481px - 768px) */
+@media (max-width: 768px) {
+  .rentalContainer {
+    padding: 18px;
+    width: 95%;
+  }
+
+  .rentalTitle {
+    font-size: 17px;
+  }
+
+  .carImage {
+    width: 90px;
+    height: 55px;
+  }
+
+  .carModel {
+    font-size: 15px;
+  }
+
+  .carType, .subText {
+    font-size: 13px;
+  }
+
+  .detailsText {
+    font-size: 13px;
+  }
+
+  .rentalPrice {
+    font-size: 20px;
+  }
+
+  .priceSubText {
+    font-size: 11px;
+  }
+}
+
+/* For large screens and desktops (769px - 1200px) */
+@media (min-width: 769px) {
+  .rentalContainer {
+    padding: 25px;
+    width: 380px; /* Fixed width for larger screens */
+  }
+
+  .rentalTitle {
+    font-size: 20px;
+  }
+
+  .carImage {
+    width: 110px;
+    height: 70px;
+  }
+
+  .carModel {
+    font-size: 18px;
+  }
+
+  .carType, .subText {
+    font-size: 15px;
+  }
+
+  .detailsText {
+    font-size: 15px;
+  }
+
+  .rentalPrice {
+    font-size: 24px;
+  }
+
+  .priceSubText {
+    font-size: 13px;
+  }
+}
