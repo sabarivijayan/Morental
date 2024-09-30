@@ -10,12 +10,12 @@ const Navbar: React.FC = () => {
 
     const handleSignUp = () => {
         // Navigate to signup page
-        router.push('/signup');
+        router.push('/registration');
     };
     
     return (
         <nav className={styles.navbar}>
-            <div className={styles.logo}>MORENT</div>
+            <div className={styles.logo} onClick={() => router.push('/')}>MORENT</div>
 
             <div className={styles.searchContainer}>
                 {/* Search Icon */}
@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
             </div>
 
             <div className={styles.actions}>
-                <button className={styles.settingsButton}>
+                <button className={styles.settingsButton} onClick={() => router.push('/user-dashboard')}>
                     <Image src="/icons/setting-2.svg" alt="Settings" className={styles.settingsIcon} width={20} height={20} />
                 </button>
                 <button className={styles.signupButton} onClick={handleSignUp}>Sign up</button>

@@ -2,8 +2,12 @@
 import React from 'react';
 import Image from 'next/image';
 import styles from './hero-section.module.css';
+import { useRouter } from 'next/navigation';
 
 const Hero: React.FC = () => {
+
+    const router = useRouter();
+    
     return (
         <section className={styles.heroSection}>
             <div className={`${styles.card} ${styles.cardOne}`}>
@@ -12,7 +16,7 @@ const Hero: React.FC = () => {
                     <p className={styles.description}>
                         Ease of doing a car rental safely and <br/> reliably. Of course at a low price.
                     </p>
-                    <button className={`${styles.rentButton} ${styles.button1}`}>Rental Car</button>
+                    <button className={`${styles.rentButton} ${styles.button1}`} onClick={() => router.push('/all-cars')}>Rental Car</button>
                 </div>
                 <div className={styles.carImageWrapper}>
                     <Image
@@ -31,7 +35,7 @@ const Hero: React.FC = () => {
                     <p className={styles.description}>
                         Providing cheap car rental services<br/> and safe and comfortable facilities.
                     </p>
-                    <button className={`${styles.rentButton} ${styles.button2}`}>Rental Car</button>
+                    <button className={`${styles.rentButton} ${styles.button2}`} onClick={() => router.push('/all-cars')}>Rental Car</button>
                 </div>
                 <div className={styles.carImageWrapper}>
                     <Image
