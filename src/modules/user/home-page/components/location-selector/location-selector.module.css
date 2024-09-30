@@ -5,8 +5,8 @@
   gap: 44px;
   padding: 12px 64px;
   box-sizing: border-box;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens to avoid horizontal scroll */
   max-width: 100%; /* Prevent overflow */
+  flex-wrap: nowrap; /* No wrapping on larger screens to maintain horizontal layout */
 }
 
 .formGroup {
@@ -130,20 +130,21 @@
 .swapButton:hover {
   background-color: #264ac5;
 }
+
 /* Responsive Design */
 
 /* For screens between 1024px and 1200px */
 @media (max-width: 1200px) {
   .container {
-    padding: 48px;
+    padding: 12px 48px;
     gap: 30px;
-    flex-direction: column; /* Stack elements vertically */
-    width: 100%;
+    justify-content: center; /* Center the content for mid-range screens */
+    flex-wrap: wrap; /* Allow wrapping when necessary */
   }
 
   .formGroup {
-    height: auto;
-    width: 100%;
+    max-width: 100%;
+    height: auto; /* Allow height to adjust based on content */
     padding: 1rem;
   }
 
@@ -165,7 +166,8 @@
   .container {
     padding: 48px;
     gap: 30px;
-    flex-direction: column;
+    flex-direction: row; /* Maintain horizontal alignment */
+    flex-wrap: wrap; /* Wrap if needed */
   }
 
   .formGroup {
@@ -219,6 +221,7 @@
   .container {
     padding: 16px;
     gap: 1rem;
+    flex-direction: column; /* Stack everything vertically on small screens */
   }
 
   .formGroup {
