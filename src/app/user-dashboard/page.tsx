@@ -4,7 +4,10 @@ import DashboardPage from "@/modules/user/user-dashboard/views/user-dashboard";
 
 const CarDetailsPage = () => {
   return (
-    <DashboardPage/>
+    <div className="main">
+      <DashboardPage/>
+    </div>
+    
   );
 };
 

@@ -3,7 +3,9 @@ import BillingDetailPage from "@/modules/user/billing-detail/views/billing-detai
 
 const BillingPage = () => {
   return (
+    <div className="main">
       <BillingDetailPage/>
+    </div>
   );
 };
 

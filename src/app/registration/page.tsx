@@ -4,7 +4,9 @@ import SignupForm from "@/modules/user/common/signup-login/signup-login";
 
 const RegistrationPage = () => {
   return (
-    <SignupForm/>
+    <div className="main">
+      <SignupForm/>
+    </div>
   );
 };
 
