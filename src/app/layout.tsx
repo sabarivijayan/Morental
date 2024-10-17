@@ -5,6 +5,8 @@ import Footer from "@/modules/user/common/footer/footer";
 import Navbar from "@/modules/user/common/navbar/navbar";
 import client from "@/lib/apollo-client";
 import { ApolloProvider } from "@apollo/client";
+import React from "react";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

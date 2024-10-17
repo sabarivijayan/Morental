@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const REGISTER_USER = gql`
   mutation RegisterUser($input: RegistrationInput!) {
@@ -38,7 +38,7 @@ export const LOGIN_USER = gql`
 `;
 
 export const SEND_OTP = gql`
-  mutation SendOtp($phoneNumber: String!) {
+  mutation SendOTP($phoneNumber: String!) {
     sendOTP(phoneNumber: $phoneNumber) {
       status
       message
@@ -46,8 +46,9 @@ export const SEND_OTP = gql`
   }
 `;
 
+
 export const VERIFY_OTP = gql`
-  mutation VerifyOtp($phoneNumber: String!, $otp: String!) {
+  mutation VerifyOTP($phoneNumber: String!, $otp: String!) {
     verifyOTP(phoneNumber: $phoneNumber, otp: $otp) {
       status
       message
@@ -69,6 +70,7 @@ export const UPDATE_PROFILE_IMAGE = gql`
       status
       message
       data {
+        id
         profileImage
       }
     }

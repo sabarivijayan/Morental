@@ -2,6 +2,7 @@ import Image from 'next/image';
 import styles from './car-card.module.css';
 import { CarCardProps } from '../../../../../../interfaces/cars'; // Import the interface
 
+// Adding 'onRentNow' as a prop for the CarCard component
 const CarCard: React.FC<CarCardProps> = ({
     title,
     category,
@@ -10,13 +11,17 @@ const CarCard: React.FC<CarCardProps> = ({
     transmission,
     capacity,
     price,
-    discountedPrice
+    discountedPrice,
+    onRentNow // Accepting onRentNow function to handle navigation
 }) => {
     return (
         <div className={styles.carCard}>
             <h3 className={styles.carTitle}>{title}</h3>
             <p className={styles.carCategory}>{category}</p>
-            <Image src={imageUrl} alt={`${title} car`} width={304} height={144} className={styles.carImage} />
+            {/* The image container enforces the aspect ratio */}
+            <div className={styles.imageContainer}>
+                <Image src={imageUrl} alt={`${title} car`} layout="fill" objectFit="cover" className={styles.carImage} />
+            </div>
             
             <div className={styles.carInfo}>
                 <div className={styles.infoItem}>
@@ -34,11 +39,14 @@ const CarCard: React.FC<CarCardProps> = ({
             </div>
 
             <div className={styles.carPrice}>
-                    <span>{price}</span>
+                <span>{price}</span>
                 <small>/day</small>
             </div>
 
-            <button className={styles.rentButton}>Rent Now</button>
+            {/* Rent Now button triggering the onRentNow function when clicked */}
+            <button className={styles.rentButton} onClick={onRentNow}>
+                Rent Now
+            </button>
         </div>
     );
 };

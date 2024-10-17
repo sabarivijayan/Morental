@@ -17,6 +17,12 @@
     min-width: 60%; /* Ensures the left column doesn't shrink below this width */
     box-sizing: border-box; /* Ensures padding/margins don't cause overflow */
     order: 2; /* Default order: leftColumn comes second */
+    overflow-x: scroll;
+    max-height: 536px;
+  }
+
+  .leftColumn::-webkit-scrollbar{
+    display: none;
   }
   
   .rightColumn { /* Fixed width for the right column */

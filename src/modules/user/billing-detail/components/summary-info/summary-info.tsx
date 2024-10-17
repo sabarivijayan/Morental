@@ -1,7 +1,11 @@
 import Image from 'next/image';
 import styles from './summary-info.module.css';
+import { RentalSummaryProps } from '@/interfaces/cars';
 
-const RentalSummary = () => {
+
+const RentalSummary: React.FC<RentalSummaryProps> = ({ carData }) => {
+  if (!carData) return <p>Loading car summary...</p>;
+
   return (
     <div className={styles.summaryContainer}>
       <h2 className={styles.title}>Rental Summary</h2>
@@ -10,24 +14,24 @@ const RentalSummary = () => {
       </p>
       <div className={styles.carInfo}>
         <Image 
-          src="/images/View.svg" 
-          alt="Nissan GT - R" 
+          src={carData.car.primaryImageUrl}
+          alt={carData.car.name}
           width={132}
           height={108}
-          className={styles.carImage} 
+          className={styles.carImage}
         />
         <div className={styles.carDetails}>
-          <h3 className={styles.carName}>Nissan GT – R</h3>
+          <h3 className={styles.carName}>{carData.car.name}</h3>
           <div className={styles.rating}>
             <span className={styles.stars}>★★★★☆</span>
-            <span className={styles.reviews}>440+ Reviewer</span>
+            <span className={styles.reviews}>{carData.reviewsCount || 0} Reviewer</span>
           </div>
         </div>
       </div>
       <div className={styles.pricing}>
         <div className={styles.priceRow}>
           <span>Subtotal</span>
-          <span>$80.00</span>
+          <span>${carData.pricePerDay}/day</span>
         </div>
         <div className={styles.priceRow}>
           <span>Tax</span>
@@ -44,7 +48,7 @@ const RentalSummary = () => {
       </div>
       <div className={styles.totalPrice}>
         <span>Total Rental Price</span>
-        <span className={styles.price}>$80.00</span>
+        <span className={styles.price}>${carData.pricePerDay}</span>
       </div>
       <p className={styles.footerText}>
         Overall price and includes rental discount
