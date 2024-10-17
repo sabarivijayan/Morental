@@ -7,6 +7,9 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie"; // Import js-cookie for handling cookies
 import styles from "./display-details-component.module.css";
 import { GET_RENTABLE_CAR_WITH_ID } from "@/graphql/queries/booking-cars"; // Adjust path as necessary
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCarSide, faCogs, faGasPump, faUserFriends } from '@fortawesome/free-solid-svg-icons'; // Import icons
+
 
 const CarDetailsComponent: React.FC = () => {
   const { id } = useParams(); // Extract car ID from URL params
@@ -115,39 +118,46 @@ const CarDetailsComponent: React.FC = () => {
           <section className={styles.carDetailsSection}>
             <h2 className={styles.carName}>{carData.car.name}</h2>
 
-            {/* Star Rating and Reviews */}
+            {/* Manufacturer Name */}
             <div className={styles.carReviews}>
-              <span className={styles.rating}>★★★★☆</span>
               <span className={styles.reviewsCount}>
-                {carData.reviewsCount || 0} Reviewer
+                {carData.car.manufacturer.name}
               </span>
             </div>
 
             <p className={styles.carDescription}>{carData.car.description}</p>
 
-            {/* Car Specs */}
-            <div className={styles.carSpecs}>
-              <p>
-                <strong>Type Car:</strong> {carData.car.type}
-              </p>
-              <p>
-                <strong>Capacity:</strong> {carData.car.numberOfSeats} Person
-              </p>
-              <p>
-                <strong>Steering:</strong> {carData.car.transmissionType}
-              </p>
-              <p>
-                <strong>Gasoline:</strong> {carData.car.fuelType}
-              </p>
+            {/* Redesigned Car Specs with Icons */}
+            <div className={styles.carSpecsGrid}>
+              <div className={styles.carSpecItem}>
+                <FontAwesomeIcon icon={faCarSide} className={styles.icon} />
+                <p className={styles.specLabel}>Type</p>
+                <p>{carData.car.type}</p>
+              </div>
+
+              <div className={styles.carSpecItem}>
+                <FontAwesomeIcon icon={faUserFriends} className={styles.icon} />
+                <p className={styles.specLabel}>Capacity</p>
+                <p>{carData.car.numberOfSeats} Persons</p>
+              </div>
+
+              <div className={styles.carSpecItem}>
+                <FontAwesomeIcon icon={faCogs} className={styles.icon} />
+                <p className={styles.specLabel}>Transmission</p>
+                <p>{carData.car.transmissionType}</p>
+              </div>
+
+              <div className={styles.carSpecItem}>
+                <FontAwesomeIcon icon={faGasPump} className={styles.icon} />
+                <p className={styles.specLabel}>Fuel</p>
+                <p>{carData.car.fuelType}</p>
+              </div>
             </div>
 
             {/* Price Section */}
             <div className={styles.carPrice}>
               <span className={styles.discountedPrice}>
                 ${carData.pricePerDay}/day
-              </span>
-              <span className={styles.originalPrice}>
-                ${carData.discountPrice || "100.00"}
               </span>
             </div>
 

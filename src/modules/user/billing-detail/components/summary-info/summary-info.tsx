@@ -1,19 +1,24 @@
-import Image from 'next/image';
-import styles from './summary-info.module.css';
-import { RentalSummaryProps } from '@/interfaces/cars';
+import Image from "next/image";
+import styles from "./summary-info.module.css";
+import { RentalSummaryProps } from "@/interfaces/cars";
 
-
-const RentalSummary: React.FC<RentalSummaryProps> = ({ carData }) => {
+const RentalSummary: React.FC<RentalSummaryProps> = ({
+  carData,
+  rentalDays,
+}) => {
   if (!carData) return <p>Loading car summary...</p>;
+
+  const totalPrice = carData.pricePerDay * rentalDays; // Calculate total price
 
   return (
     <div className={styles.summaryContainer}>
       <h2 className={styles.title}>Rental Summary</h2>
       <p className={styles.description}>
-        Prices may change depending on the length of the rental and the price of your rental car.
+        Prices may change depending on the length of the rental and the price of
+        your rental car.
       </p>
       <div className={styles.carInfo}>
-        <Image 
+        <Image
           src={carData.car.primaryImageUrl}
           alt={carData.car.name}
           width={132}
@@ -24,7 +29,9 @@ const RentalSummary: React.FC<RentalSummaryProps> = ({ carData }) => {
           <h3 className={styles.carName}>{carData.car.name}</h3>
           <div className={styles.rating}>
             <span className={styles.stars}>★★★★☆</span>
-            <span className={styles.reviews}>{carData.reviewsCount || 0} Reviewer</span>
+            <span className={styles.reviews}>
+              {carData.reviewsCount || 0} Reviewer
+            </span>
           </div>
         </div>
       </div>
@@ -48,7 +55,7 @@ const RentalSummary: React.FC<RentalSummaryProps> = ({ carData }) => {
       </div>
       <div className={styles.totalPrice}>
         <span>Total Rental Price</span>
-        <span className={styles.price}>${carData.pricePerDay}</span>
+        <span className={styles.price}>${totalPrice}</span>
       </div>
       <p className={styles.footerText}>
         Overall price and includes rental discount

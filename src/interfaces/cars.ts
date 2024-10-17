@@ -26,6 +26,7 @@ export interface RentableCar {
   
 // Define CarData and Car interfaces based on your data structure
 export interface Car {
+  id: string;
   name: string;
   primaryImageUrl: string;
   description: string;
@@ -46,4 +47,5 @@ export interface CarData {
 // Use CarData in RentalSummary component props
 export interface RentalSummaryProps {
   carData: CarData | null;
+  rentalDays: number;
 }

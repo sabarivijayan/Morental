@@ -16,4 +16,17 @@ export interface Booking {
   export interface RentalDetailsProps {
     bookings: Booking[];
   }
+  export interface BillingInfoFormProps {
+    onInputChange: (field: string, isValid: boolean) => void;
+    prefillData?: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber: string;
+      city?: string;
+      state?: string;
+      country?: string;
+      postalCode?: string;
+    };
+  }
   

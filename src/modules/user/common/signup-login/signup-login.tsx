@@ -121,7 +121,7 @@ const SignupForm: React.FC = () => {
   
         // Store token in cookies
         Cookies.set("token", data.userLogin.token, {
-          expires: 1 / 12, // Token expires in 2 hours
+          expires: 1 / 24, // Token expires in 7 days
           secure: true, // Use true if your site is served over HTTPS
           sameSite: "Strict", // Helps prevent CSRF attacks
         });

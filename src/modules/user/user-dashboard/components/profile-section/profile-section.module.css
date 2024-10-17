@@ -1,221 +1,69 @@
-/* General Styling for Desktop and Larger Screens */
+/* profile-section.module.css */
+
 .container {
-  padding-bottom: 32px;
+  padding: 40px;
 }
 
-.profileContainer {
+.profileRow {
+  margin-bottom: 50px;
+}
+
+.centerContent {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-top: 40px;
-}
-
-.profilePicContainer {
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.profilePic {
-  border-radius: 50%;
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-}
-
-.editIconContainer {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  background-color: white;
-  border-radius: 50%;
-  padding: 8px;
-}
-
-.editIconImage {
-  width: 16px;
-  height: 16px;
-}
-
-.userInfoContainer {
-  display: flex;
   flex-direction: column;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  position: relative;
 }
 
-.userInfoHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.profilePicModern {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.userInfoTitle {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.label {
-  margin-bottom: 10px;
-}
-
-.inputField {
-  margin-bottom: 20px;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.disabledInput {
-  background-color: #e9ecef;
-  cursor: not-allowed;
-}
-
-.userInfoEditIcon {
-  cursor: pointer;
-  background-color: white;
-  border-radius: 50%;
-  padding: 8px;
-}
-
-.saveButton {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.uploadModern {
   margin-top: 20px;
 }
 
-.saveButton:hover {
-  background-color: #0056b3;
+.changePicButton, .uploadButtonModern {
+  margin-top: 10px;
+  width: 200px;
 }
 
-/* Responsive Styling */
-
-/* Mobile Devices (Max Width 600px) */
-@media (max-width: 600px) {
-  .profileContainer {
-      margin-top: 20px;
-  }
-
-  .profilePic {
-      width: 100px;
-      height: 100px;
-  }
-
-  .editIconContainer {
-      top: 5px;
-      right: 5px;
-      padding: 6px;
-  }
-
-  .editIconImage {
-      width: 12px;
-      height: 12px;
-  }
-
-  .userInfoContainer {
-      width: 100%; /* Full width for mobile */
-      padding: 15px;
-  }
-
-  .userInfoTitle {
-      font-size: 16px;
-  }
-
-  .inputField {
-      padding: 8px;
-  }
-
-  .saveButton {
-      width: 100%;
-      padding: 10px 0;
-      margin-top: 15px;
-  }
+.userInfoContainerModern {
+  width: 100%;
+  max-width: 600px;
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Tablets (601px to 900px) */
-@media (min-width: 601px) and (max-width: 900px) {
-  .profileContainer {
-      margin-top: 30px;
-  }
-
-  .profilePic {
-      width: 120px;
-      height: 120px;
-  }
-
-  .editIconContainer {
-      top: 8px;
-      right: 8px;
-      padding: 7px;
-  }
-
-  .editIconImage {
-      width: 14px;
-      height: 14px;
-  }
-
-  .userInfoContainer {
-      width: 80%;
-  }
-
-  .userInfoTitle {
-      font-size: 17px;
-  }
-
-  .inputField {
-      padding: 9px;
-  }
-
-  .saveButton {
-      padding: 12px 18px;
-  }
+.userInfoHeaderModern {
+  margin-bottom: 20px;
 }
 
-/* Small Laptops (901px to 1200px) */
-@media (min-width: 901px) and (max-width: 1200px) {
-  .profileContainer {
-      margin-top: 35px;
-  }
-
-  .profilePic {
-      width: 140px;
-      height: 140px;
-  }
-
-  .userInfoContainer {
-      width: 280px;
-  }
-
-  .userInfoTitle {
-      font-size: 18px;
-  }
+.userInfoTitleModern {
+  font-size: 24px;
 }
 
-/* Large Screens (Min Width 1201px) */
-@media (min-width: 1201px) {
-  .profileContainer {
-      margin-top: 40px;
-  }
+.editButtonModern {
+  font-size: 18px;
+}
 
-  .profilePic {
-      width: 150px;
-      height: 150px;
-  }
+.formModern .labelModern {
+  font-size: 16px;
+  color: #888;
+}
 
-  .userInfoContainer {
-      width: 300px;
-  }
+.inputModern {
+  font-size: 16px;
+  border-radius: 6px;
+  padding: 12px;
+}
 
-  .userInfoTitle {
-      font-size: 18px;
-  }
+.saveButtonModern {
+  margin-top: 20px;
+  width: 100%;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 6px;
 }

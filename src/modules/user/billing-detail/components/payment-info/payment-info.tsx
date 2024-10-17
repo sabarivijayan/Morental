@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import RazorpayLogo from '../../../../../../public/images/razorpay.svg'; // Path to your Razorpay SVG file
 import styles from './payment-info.module.css';
 
-const PaymentForm = () => {
-  const [paymentMethod, setPaymentMethod] = useState('razorpay');
+interface PaymentFormProps {
+  onInputChange: (field: string, isValid: boolean) => void; // Callback for validation
+}
+
+const PaymentForm: React.FC<PaymentFormProps> = ({ onInputChange }) => {
+  const [paymentMethod, setPaymentMethod] = useState("razorpay");
+
+  useEffect(() => {
+    onInputChange("paymentMethod", !!paymentMethod); // Ensure payment method is selected
+  }, [paymentMethod]);
 
   const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPaymentMethod(event.target.value);

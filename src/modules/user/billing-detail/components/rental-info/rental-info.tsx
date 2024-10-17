@@ -1,9 +1,58 @@
-import React from 'react';
-import styles from './rental-info.module.css';
+import React, { useEffect, useState } from "react";
+import styles from "./rental-info.module.css";
 
-const RentalInfoForm = () => {
-  // Get today's date in YYYY-MM-DD format
-  const today = new Date().toISOString().split('T')[0];
+interface RentalInfoFormProps {
+  setRentalDays: (days: number) => void; // Function to pass rental days to the parent component
+  onInputChange: (field: string, isValid: boolean) => void; // Callback for validation
+}
+
+const RentalInfoForm: React.FC<RentalInfoFormProps> = ({ setRentalDays, onInputChange }) => {
+  const today = new Date().toISOString().split("T")[0]; // Get today's date
+
+  // State for pickup and dropoff dates
+  const [pickupDate, setPickupDate] = useState("");
+  const [dropoffDate, setDropoffDate] = useState("");
+  const [pickupLocation, setPickupLocation] = useState("");
+  const [dropoffLocation, setDropoffLocation] = useState("");
+
+  useEffect(() => {
+    // Validate both locations and dates
+    const isFormValid =
+      !!pickupLocation &&
+      !!dropoffLocation &&
+      !!pickupDate &&
+      !!dropoffDate;
+
+    onInputChange("rentalInfo", isFormValid);
+  }, [pickupLocation, dropoffLocation, pickupDate, dropoffDate]);
+
+  // Function to calculate the number of rental days based on pickup and dropoff dates
+  const calculateRentalDays = (pickup: string, dropoff: string) => {
+    const pickDate = new Date(pickup);
+    const dropDate = new Date(dropoff);
+    const days = Math.ceil((dropDate.getTime() - pickDate.getTime()) / (1000 * 3600 * 24)) + 1;
+
+    setRentalDays(days);
+  };
+
+  // Handlers for date changes
+  const handlePickupDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPickupDate = e.target.value;
+    setPickupDate(newPickupDate);
+    if (newPickupDate > dropoffDate) {
+      setDropoffDate(newPickupDate); // Ensure drop-off date isn't earlier than pickup
+    }
+    calculateRentalDays(newPickupDate, dropoffDate);
+  };
+
+  const handleDropoffDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDropoffDate = e.target.value;
+    setDropoffDate(newDropoffDate);
+    if (newDropoffDate < pickupDate) {
+      setPickupDate(newDropoffDate); // Ensure pickup date isn't later than drop-off
+    }
+    calculateRentalDays(pickupDate, newDropoffDate);
+  };
 
   return (
     <div className={styles.rentalInfoContainer}>
@@ -30,7 +79,7 @@ const RentalInfoForm = () => {
           {/* Pick-up Location */}
           <div className={styles.fieldGroup}>
             <label htmlFor="pickupLocation">Locations</label>
-            <select id="pickupLocation">
+            <select id="pickupLocation" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
               <option>Select your city</option>
               <option>New York</option>
               <option>Los Angeles</option>
@@ -40,8 +89,14 @@ const RentalInfoForm = () => {
 
           {/* Pick-up Date */}
           <div className={styles.fieldGroup}>
-            <label htmlFor="pickupDate">Date</label>
-            <input type="date" id="pickupDate" min={today} />
+            <label htmlFor="pickupDate">Pick-up Date:</label>
+            <input
+              type="date"
+              id="pickupDate"
+              min={today}
+              value={pickupDate}
+              onChange={handlePickupDateChange}
+            />
           </div>
 
           {/* Pick-up Time */}
@@ -65,7 +120,7 @@ const RentalInfoForm = () => {
           {/* Drop-off Location */}
           <div className={styles.fieldGroup}>
             <label htmlFor="dropoffLocation">Locations</label>
-            <select id="dropoffLocation">
+            <select id="dropoffLocation" value={dropoffLocation} onChange={(e) => setDropoffLocation(e.target.value)}>
               <option>Select your city</option>
               <option>New York</option>
               <option>Los Angeles</option>
@@ -75,8 +130,14 @@ const RentalInfoForm = () => {
 
           {/* Drop-off Date */}
           <div className={styles.fieldGroup}>
-            <label htmlFor="dropoffDate">Date</label>
-            <input type="date" id="dropoffDate" min={today} />
+            <label htmlFor="dropoffDate">Drop-off Date:</label>
+            <input
+              type="date"
+              id="dropoffDate"
+              min={pickupDate} // Ensure drop-off date is not earlier than pickup
+              value={dropoffDate}
+              onChange={handleDropoffDateChange}
+            />
           </div>
 
           {/* Drop-off Time */}

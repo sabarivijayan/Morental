@@ -13,14 +13,33 @@ interface UserData {
   city: string;
   // Add any other fields you need
 }
+interface BillingInfoFormProps {
+  onInputChange: (field: string, isValid: boolean) => void; // Add callback to track validation
+  prefillData?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    postalCode?: string;
+  };
+}
 
-const BillingInfoForm: React.FC = () => {
+const BillingInfoForm: React.FC<BillingInfoFormProps> = ({onInputChange}) => {
   const [userData, setUserData] = useState<UserData>({
     firstName: "",
     lastName: "",
     phoneNumber: "",
     city: "",
   });
+
+  useEffect(() => {
+    const { firstName, lastName, phoneNumber, city } = userData;
+    onInputChange("billingInfo", !!firstName && !!lastName && !!phoneNumber && !!city); // Check all fields
+  }, [userData]);
+
 
   const [isEditing, setIsEditing] = useState(false); // New state to track if editing is enabled
   const token = Cookies.get("token"); // Retrieve token from cookies

@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./confirmation-info.module.css";
 import Image from "next/image";
-const Confirmation = () => {
-  const [agreed, setAgreed] = useState(false);
 
+interface ConfirmationProps {
+  onInputChange: (field: string, isValid: boolean) => void; // Callback for validation
+}
+const Confirmation: React.FC<ConfirmationProps> = ({ onInputChange }) => {
+  const [agreed, setAgreed] = useState(false);
+  
+  
+  useEffect(() => {
+    onInputChange("confirmation", agreed); // Ensure the user agrees to terms
+  }, [agreed]);
+  
+  
   const handleAgreeChange = () => {
     setAgreed(!agreed);
   };
@@ -33,11 +43,6 @@ const Confirmation = () => {
           I agree with our terms and conditions and privacy policy.
         </label>
       </div>
-
-      {/* Rent Now Button */}
-      <button className={styles.rentButton} disabled={!agreed}>
-        Rent Now
-      </button>
 
       {/* Security Notice */}
       <div className={styles.securityNotice}>

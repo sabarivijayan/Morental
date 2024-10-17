@@ -65,12 +65,11 @@ export const VERIFY_OTP = gql`
 `;
 
 export const UPDATE_PROFILE_IMAGE = gql`
-  mutation UpdateProfileImage($userId: ID!, $profileImage: String) {
+  mutation UpdateProfileImage($userId: ID!, $profileImage: Upload) {
     updateProfileImage(userId: $userId, profileImage: $profileImage) {
       status
       message
       data {
-        id
         profileImage
       }
     }

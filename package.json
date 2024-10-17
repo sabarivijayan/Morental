@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@types/firebase": "^3.2.1",
     "antd": "^5.21.3",
     "apollo-upload-client": "^18.0.1",

@@ -108,6 +108,94 @@
     margin-right: 10px;
     color: #4a5568; /* Ensure it matches the icon color */
 }
+/* Existing styles... */
+
+/* Profile Container */
+.profileContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profileIcon {
+    border-radius: 50%;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.profileIcon:hover {
+    transform: scale(1.05); /* Slight scaling effect on hover */
+}
+
+/* Dropdown Menu */
+.dropdownMenu {
+    position: fixed; /* Keeps it visible relative to the viewport */
+    top: 60px; /* Positions below the profile icon */
+    right: 20px; /* Adjusts to fit within screen width */
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    width: 150px;
+    z-index: 10000;
+    overflow: hidden;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Adjust dropdown for smaller screens to fit within the viewport */
+@media (max-width: 768px) {
+    .dropdownMenu {
+        right: 0; /* Ensures dropdown aligns properly on narrow screens */
+    }
+}
+
+.dropdownMenu button {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 14px;
+    color: #4a5568;
+    text-align: left;
+    border: none;
+    background: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dropdownMenu button:hover {
+    background-color: #f3f4f6; /* Light grey background on hover */
+}
+
+.dropdownMenu button:active {
+    background-color: #e2e8f0; /* Darker grey on active click */
+}
+
+/* Responsive Styling Adjustments for Dropdown */
+@media (max-width: 767px) {
+    .profileContainer {
+        align-self: flex-start;
+        margin-top: 10px;
+    }
+    .dropdownMenu {
+        top: 50px;
+        width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profileIcon {
+        width: 32px;
+        height: 32px;
+    }
+    .dropdownMenu {
+        top: 48px;
+        width: 100px;
+    }
+    .dropdownMenu button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
 
 /* Responsive Design */
 
