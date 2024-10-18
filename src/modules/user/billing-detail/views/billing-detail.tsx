@@ -11,16 +11,28 @@ import RentalInfoForm from "../components/rental-info/rental-info";
 import RentalSummary from "../components/summary-info/summary-info";
 import styles from "./billing-detail.module.css";
 import { CarData } from "@/interfaces/cars";
+import Cookies from "js-cookie";
+
 
 const BillingDetailPage = () => {
   const [rentalDays, setRentalDays] = useState(1);
   const { id } = useParams();
+  const router = useRouter();
   const [carData, setCarData] = useState<CarData | null>(null);
   const [isBillingInfoComplete, setBillingInfoComplete] = useState(false);
   const [isRentalInfoComplete, setRentalInfoComplete] = useState(false);
   const [isPaymentInfoComplete, setPaymentInfoComplete] = useState(false);
   const [isConfirmationComplete, setConfirmationComplete] = useState(false);
 
+  useEffect(() => {
+    // Check if token exists in cookies
+    const token = Cookies.get("token"); // Assuming the token is stored under "token"
+
+    if (!token) {
+      // If no token is found, redirect to login
+      router.push("/registration");
+    }
+  }, [router]);
   // Fetch user data
   const { data: userData, loading: userLoading } = useQuery(FETCH_USER);
   const userInfo = userData?.fetchUser?.data;
@@ -57,8 +69,6 @@ const BillingDetailPage = () => {
 
   const [generatePaymentOrder] = useMutation(GENERATE_PAYMENT_ORDER);
   const [verifyPaymentAndCreateBooking] = useMutation(VERIFY_PAYMENT_AND_CREATE_BOOKING);
-
-  const router = useRouter();
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {

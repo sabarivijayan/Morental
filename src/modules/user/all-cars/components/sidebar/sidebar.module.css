@@ -9,7 +9,7 @@
   left: 0;
   width: 75%;
   background-color: #fff;
-  z-index: 999; /* Ensure it sits above the other content */
+  z-index: 998; /* Ensure it sits above the other content */
   transition: transform 0.3s ease, opacity 0.3s ease;
   transform: translateX(-100%); /* Hidden by default */
   opacity: 0;

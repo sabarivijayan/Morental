@@ -6,7 +6,7 @@
     background-color: white;
     padding: 32px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -48,6 +48,37 @@
     margin-right: 12px;
   }
   
+  /* Breathing Effect */
+  @keyframes breathing {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+  }
+  
+  @keyframes breathing2 {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+  }
+  
   .outerCircle {
     width: 16px;
     height: 16px;
@@ -56,6 +87,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: breathing2 2.5s ease-in-out infinite;
   }
   
   .innerCircle {
@@ -63,6 +95,7 @@
     height: 8px;
     border-radius: 50%;
     background-color: #5caffc; /* Smaller circle */
+    animation: breathing 2s ease-in-out infinite;
   }
   
   .label {
