@@ -88,3 +88,43 @@ export const GET_RENTABLE_CARS = gql`
     }
   }
 `;
+
+export const FETCH_BOOKINGS = gql`
+  query FetchBookings {
+    fetchBookings {
+      status
+      message
+      data {
+        id
+        carId
+        userId
+        pickUpDate
+        pickUpTime
+        dropOffDate
+        dropOffTime
+        pickUpLocation
+        dropOffLocation
+        address
+        phoneNumber
+        totalPrice
+        status
+        rentable {
+          id
+          car {
+            id
+            name
+            type
+            numberOfSeats
+            fuelType
+            transmissionType
+            primaryImageUrl
+            manufacturer {
+              id
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`;

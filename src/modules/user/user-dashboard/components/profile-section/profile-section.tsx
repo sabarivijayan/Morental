@@ -1,210 +1,393 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { Upload, Avatar, Button, Form, Input, message, Row, Col, Typography, Space } from "antd";
-import { UserOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  Tabs,
+  Table,
+  Checkbox,
+  Upload,
+  message,
+  Avatar,
+  Button,
+  Form,
+  Input,
+  Spin,
+  Modal,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { FETCH_BOOKINGS } from "@/graphql/queries/booking-cars";
 import { FETCH_USER } from "@/graphql/queries/auth";
-import { UPDATE_PROFILE_IMAGE } from "@/graphql/mutations/auth";
-import { RcFile, UploadFile } from "antd/es/upload/interface";
+import { UPDATE_PASSWORD, UPDATE_PROFILE_IMAGE, UPDATE_USER_PROFILE } from "@/graphql/mutations/auth";
 import styles from "./profile-section.module.css";
 
-const { Title, Text } = Typography;
+interface BookingData {
+  id: string;
+  carId: number;
+  userId: number;
+  pickUpDate: string;
+  pickUpTime: string;
+  dropOffDate: string;
+  dropOffTime: string;
+  pickUpLocation: string;
+  dropOffLocation: string;
+  address: string;
+  totalPrice: number;
+  status: string;
+  rentable: {
+    car: {
+      name: string;
+      type: string;
+      numberOfSeats: string;
+      fuelType: string;
+      transmissionType: string;
+      primaryImageUrl: string;
+      manufacturer: {
+        name: string;
+      };
+    };
+  };
+}
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
+interface UserInfo {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  city: string;
+  state: string;
+  country: string;
+  pincode: string;
+  profileImage: string;
+}
 
-export default function ProfilePage() {
-  const [userData, setUserData] = useState({
-    id: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    city: "",
-    state: "",
-    country: "",
-    pincode: "",
-    profileImage: "",
+const UserDashboard: React.FC = () => {
+  const [selectedBookings, setSelectedBookings] = useState<string[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [passwordModalVisible, setPasswordModalVisible] = useState(false);
+
+  const [profileForm] = Form.useForm();
+  const [passwordForm] = Form.useForm();
+
+  const { data: bookingData, loading: bookingLoading } = useQuery(FETCH_BOOKINGS, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    },
   });
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
 
-  const { data, loading, error } = useQuery(FETCH_USER);
+  const {
+    data: userData,
+    loading: userLoading,
+    refetch: refetchUser,
+  } = useQuery(FETCH_USER);
 
   const [updateProfileImage] = useMutation(UPDATE_PROFILE_IMAGE);
+  const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE);
+  const [updatePassword] = useMutation(UPDATE_PASSWORD);
 
-  useEffect(() => {
-    if (data?.fetchUser?.data) {
-      setUserData(data.fetchUser.data);
-    }
-  }, [data]);
+  const handlePasswordUpdate = async () => {
+    try {
+      const values = await passwordForm.validateFields();
+      const response = await updatePassword({
+        variables: {
+          userId: userData?.fetchUser?.data?.id,
+          input: {
+            currentPassword: values.currentPassword,
+            newPassword: values.newPassword,
+            confirmPassword: values.confirmNewPassword,
+          },
+        },
+      });
 
-  const handleFileChange = (info: { fileList: UploadFile[] }) => {
-    const isLt5M = info.fileList[0]?.size ? info.fileList[0].size / 1024 / 1024 < 5 : true;
-    if (!isLt5M) {
-      message.error('Image must be smaller than 5MB!');
-      return;
-    }
-    setFileList(info.fileList);
-  };
-
-  const beforeUpload = (file: RcFile) => {
-    const isAllowedType = ALLOWED_FILE_TYPES.includes(file.type);
-    if (!isAllowedType) {
-      message.error('You can only upload JPG/PNG/GIF file!');
-    }
-    const isLt5M = file.size / 1024 / 1024 < 5;
-    if (!isLt5M) {
-      message.error('Image must be smaller than 5MB!');
-    }
-    return isAllowedType && isLt5M;
-  };
-
-  const handleUpload = async () => {
-    if (fileList.length > 0) {
-      const file = fileList[0].originFileObj;
-      if (!file) {
-        message.error("No valid file to upload");
-        return;
+      if (response.data?.updatePassword?.status === "success") {
+        message.success("Password updated successfully!");
+        setPasswordModalVisible(false);
+        passwordForm.resetFields();
+      } else {
+        message.error(response.data?.updatePassword?.message || "Failed to update password");
       }
-      setIsUploading(true);
-      try {
-        const { data } = await updateProfileImage({
-          variables: { userId: userData.id, profileImage: file },
-        });
-        if (data?.updateProfileImage?.status === "success") {
-          const newProfileImage = data.updateProfileImage.data?.profileImage;
-          if (newProfileImage) {
-            setUserData(prevData => ({
-              ...prevData,
-              profileImage: newProfileImage
-            }));
-            message.success(data.updateProfileImage.message);
-          } else {
-            message.warning("Profile image updated, but new URL not received");
-          }
-        } else {
-          throw new Error(data?.updateProfileImage?.message || "Failed to update profile image");
-        }
-      } catch (error) {
-        message.error(`Error uploading image: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      } finally {
-        setIsUploading(false);
-        setFileList([]);
-      }
+    } catch (error: any) {
+      message.error(error.message || "Error updating password");
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  const handleSaveProfile = async () => {
+    try {
+      const values = await profileForm.validateFields();
+      const response = await updateUserProfile({
+        variables: {
+          userId: userData?.fetchUser?.data?.id,
+          input: {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            city: values.city,
+            state: values.state,
+            country: values.country,
+            pincode: values.pincode,
+          },
+        },
+      });
+
+      if (response.data?.updateUserProfile?.status === "success") {
+        message.success("Profile updated successfully!");
+        setIsEditing(false);
+        refetchUser();
+      } else {
+        message.error(response.data?.updateUserProfile?.message || "Failed to update profile");
+      }
+    } catch (error: any) {
+      message.error(error.message || "Error updating profile");
+    }
+  };
+  const handleImageUpload = async (file: File) => {
+    try {
+      const response = await updateProfileImage({
+        variables: {
+          userId: userData?.fetchUser?.data?.id,
+          profileImage: file,
+        },
+      });
+
+      if (response.data?.updateProfileImage?.status === "success") {
+        message.success("Profile image updated successfully!");
+        refetchUser();
+      } else {
+        message.error(response.data?.updateProfileImage?.message || "Failed to update profile image");
+      }
+    } catch (error: any) {
+      message.error(error.message || "Error uploading profile image");
+    }
+  };
+
+  const handleEditProfile = () => {
+    setIsEditing(true);
+    const user = userData?.fetchUser?.data;
+    if (user) {
+      profileForm.setFieldsValue({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        city: user.city,
+        state: user.state,
+        country: user.country,
+        pincode: user.pincode,
+      });
+    }
+  };
+
+  const handleBookingSelection = (bookingId: string, checked: boolean) => {
+    setSelectedBookings((prevSelected) =>
+      checked
+        ? [...prevSelected, bookingId]
+        : prevSelected.filter((id) => id !== bookingId)
+    );
+  };
+
+  if (userLoading || bookingLoading) return <Spin />;
+
+  const columns = [
+    {
+      title: "Car",
+      dataIndex: ["rentable", "car"],
+      key: "car",
+      render: (_: any, record: BookingData) => {
+        const car = record.rentable?.car;
+        return car ? (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Avatar src={car.primaryImageUrl} size={64} />
+            <span style={{ marginLeft: "8px", whiteSpace: "nowrap", textOverflow:"ellipsis", overflow: "hidden" }}>{car.name}</span>
+          </div>
+        ) : (
+          <span>No car data</span>
+        );
+      },
+    },
+    {
+      title: "Pick-up Date",
+      dataIndex: "pickUpDate",
+      key: "pickUpDate",
+      render: (text: string) => new Date(text).toLocaleDateString("en-GB"),
+    },
+    {
+      title: "Drop-off Date",
+      dataIndex: "dropOffDate",
+      key: "dropOffDate",
+      render: (text: string) => new Date(text).toLocaleDateString("en-GB"),
+    },
+    {
+      title: "Location",
+      key: "location",
+      render: (_: any, record: BookingData) => (
+        <>
+          {record.pickUpLocation} to {record.dropOffLocation}
+        </>
+      ),
+    },
+    {
+      title: "Total Price",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
+      render: (price: number) => `$${price.toFixed(2)}`,
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
+      ellipsis: true,
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+      ellipsis: true,
+    },
+    {
+      title: "Select",
+      key: "select",
+      render: (_: any, record: BookingData) => (
+        <Checkbox
+          checked={selectedBookings.includes(record.id)}
+          onChange={(e) => handleBookingSelection(record.id, e.target.checked)}
+        />
+      ),
+    },
+  ];
+
+  const user: UserInfo | undefined = userData?.fetchUser?.data;
+  const bookings: BookingData[] | undefined = bookingData?.fetchBookings?.data;
 
   return (
-    <div className={styles.container}>
-      <Row justify="center" align="middle" className={styles.profileRow}>
-        <Col span={24} className={styles.centerContent}>
-          <Space direction="vertical" size="middle" align="center">
-            <Avatar
-              size={150}
-              icon={!userData.profileImage && <UserOutlined />}
-              src={userData.profileImage || undefined}
-              className={styles.profilePicModern}
-            />
-            <Upload
-              fileList={fileList}
-              beforeUpload={beforeUpload}
-              onChange={handleFileChange}
-              className={styles.uploadModern}
-            >
-              <Button icon={<UploadOutlined />} className={styles.changePicButton}>
-                Change Profile Picture
-              </Button>
-            </Upload>
-            {fileList.length > 0 && (
-              <Button
-                type="primary"
-                onClick={handleUpload}
-                loading={isUploading}
-                className={styles.uploadButtonModern}
-              >
-                Upload
+    <div className={styles.dashboardContainer}>
+      <div className={styles.avatarContainer}>
+        <Avatar size={128} src={user?.profileImage} />
+      </div>
+      <Upload
+        beforeUpload={(file) => {
+          handleImageUpload(file);
+          return false;
+        }}
+        showUploadList={false}
+      >
+        <Button className={styles.uploadButton} icon={<UploadOutlined />}>
+          Change Profile Image
+        </Button>
+      </Upload>
+
+      <Tabs className={styles.tabsContainer} defaultActiveKey="1">
+        <Tabs.TabPane tab="Profile Information" key="1">
+          <Form
+            form={profileForm}
+            layout="vertical"
+            className={styles.formContainer}
+          >
+            <Form.Item label="First Name" name="firstName">
+              <Input disabled={!isEditing} />
+            </Form.Item>
+            <Form.Item label="Last Name" name="lastName">
+              <Input disabled={!isEditing} />
+            </Form.Item>
+            <Form.Item label="Email" name="email">
+              <Input disabled={!isEditing} />
+            </Form.Item>
+            <Form.Item label="Phone Number" name="phoneNumber">
+              <Input disabled readOnly />
+            </Form.Item>
+            <Form.Item label="City" name="city">
+              <Input disabled={!isEditing} />
+            </Form.Item>
+            <Form.Item label="State" name="state">
+              <Input disabled={!isEditing} />
+            </Form.Item>
+            <Form.Item label="Country" name="country">
+              <Input disabled={!isEditing} />
+            </Form.Item>
+            <Form.Item label="Pincode" name="pincode">
+              <Input disabled={!isEditing} />
+            </Form.Item>
+          </Form>
+
+          <div className={styles.actionButtons}>
+            {isEditing ? (
+              <>
+                <Button type="primary" onClick={handleSaveProfile}>
+                  Save Profile
+                </Button>
+                <Button onClick={() => setIsEditing(false)}>Cancel</Button>
+                <Button onClick={() => setPasswordModalVisible(true)}>
+                  Change Password
+                </Button>
+              </>
+            ) : (
+              <Button type="primary" onClick={handleEditProfile}>
+                Edit Profile
               </Button>
             )}
-          </Space>
-        </Col>
-
-        <Col span={24} className={styles.centerContent}>
-          <div className={styles.userInfoContainerModern}>
-            <Row justify="space-between" align="middle" className={styles.userInfoHeaderModern}>
-              <Title level={3} className={styles.userInfoTitleModern}>User Info</Title>
-            </Row>
-
-            <Form layout="vertical" className={styles.formModern}>
-              <Form.Item label={<Text className={styles.labelModern}>First Name</Text>}>
-                <Input
-                  value={userData.firstName}
-                  disabled={true}
-                  className={styles.inputModern}
-                />
-              </Form.Item>
-
-              <Form.Item label={<Text className={styles.labelModern}>Last Name</Text>}>
-                <Input
-                  value={userData.lastName}
-                  disabled={true}
-                  className={styles.inputModern}
-                />
-              </Form.Item>
-
-              <Form.Item label={<Text className={styles.labelModern}>Email</Text>}>
-                <Input
-                  value={userData.email}
-                  disabled={true}
-                  className={styles.inputModern}
-                />
-              </Form.Item>
-
-              <Form.Item label={<Text className={styles.labelModern}>Phone Number</Text>}>
-                <Input
-                  value={userData.phoneNumber}
-                  disabled={true}
-                  className={styles.inputModern}
-                />
-              </Form.Item>
-
-              <Form.Item label={<Text className={styles.labelModern}>City</Text>}>
-                <Input
-                  value={userData.city}
-                  disabled={true}
-                  className={styles.inputModern}
-                />
-              </Form.Item>
-
-              <Form.Item label={<Text className={styles.labelModern}>State</Text>}>
-                <Input
-                  value={userData.state}
-                  disabled={true}
-                  className={styles.inputModern}
-                />
-              </Form.Item>
-
-              <Form.Item label={<Text className={styles.labelModern}>Country</Text>}>
-                <Input
-                  value={userData.country}
-                  disabled={true}
-                  className={styles.inputModern}
-                />
-              </Form.Item>
-
-              <Form.Item label={<Text className={styles.labelModern}>Pincode</Text>}>
-                <Input
-                  value={userData.pincode}
-                  disabled={true}
-                  className={styles.inputModern}
-                />
-              </Form.Item>
-            </Form>
           </div>
-        </Col>
-      </Row>
+        </Tabs.TabPane>
+
+        <Tabs.TabPane tab="Bookings" key="2">
+          <Table
+            dataSource={bookings}
+            columns={columns}
+            rowKey="id"
+            className={styles.tableContainer}
+            scroll={{x: "100%"}}
+          />
+        </Tabs.TabPane>
+      </Tabs>
+
+      <Modal
+        title="Change Password"
+        open={passwordModalVisible}
+        onOk={handlePasswordUpdate}
+        onCancel={() => {
+          setPasswordModalVisible(false);
+          passwordForm.resetFields();
+        }}
+      >
+        <Form form={passwordForm} layout="vertical">
+          <Form.Item
+            label="Current Password"
+            name="currentPassword"
+            rules={[{ required: true, message: "Please enter your current password" }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="New Password"
+            name="newPassword"
+            rules={[
+              { required: true, message: "Please enter your new password" },
+              { min: 8, message: "Password must be at least 8 characters long" }
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="Confirm New Password"
+            name="confirmNewPassword"
+            dependencies={["newPassword"]}
+            rules={[
+              { required: true, message: "Please confirm your new password" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("newPassword") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("Passwords do not match"));
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
-}
+};
+
+export default UserDashboard;

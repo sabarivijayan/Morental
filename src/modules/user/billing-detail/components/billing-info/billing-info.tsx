@@ -1,60 +1,61 @@
-"use client";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import styles from "./billing-info.module.css";
 import { FETCH_USER } from "@/graphql/queries/auth";
-import { Button, message } from "antd"; // Assuming Ant Design is being used
+import { Button, message } from "antd";
 
 interface UserData {
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  city: string;
-  // Add any other fields you need
+  address: string;
 }
+
 interface BillingInfoFormProps {
-  onInputChange: (field: string, isValid: boolean) => void; // Add callback to track validation
+  onInputChange: (field: string, isValid: boolean, data?: any) => void;
   prefillData?: {
     firstName: string;
     lastName: string;
     email: string;
     phoneNumber: string;
-    city?: string;
-    state?: string;
-    country?: string;
-    postalCode?: string;
+    address?: string;
   };
 }
 
-const BillingInfoForm: React.FC<BillingInfoFormProps> = ({onInputChange}) => {
+const BillingInfoForm: React.FC<BillingInfoFormProps> = ({ onInputChange, prefillData }) => {
   const [userData, setUserData] = useState<UserData>({
     firstName: "",
     lastName: "",
     phoneNumber: "",
-    city: "",
+    address: "",
   });
 
   useEffect(() => {
-    const { firstName, lastName, phoneNumber, city } = userData;
-    onInputChange("billingInfo", !!firstName && !!lastName && !!phoneNumber && !!city); // Check all fields
-  }, [userData]);
+    const { firstName, lastName, phoneNumber, address } = userData;
+    onInputChange("billingInfo", !!firstName && !!lastName && !!phoneNumber && !!address, userData);
+  }, [userData, onInputChange]);
 
-
-  const [isEditing, setIsEditing] = useState(false); // New state to track if editing is enabled
-  const token = Cookies.get("token"); // Retrieve token from cookies
-  console.log(token);
+  const [isEditing, setIsEditing] = useState(false);
+  const token = Cookies.get("token");
 
   const { data, loading, error } = useQuery(FETCH_USER, {
-    skip: !token, // Skip query if no token
+    skip: !token,
   });
 
   useEffect(() => {
-    if (data?.fetchUser?.status === "success") {
-      const { firstName, lastName, phoneNumber, city } = data.fetchUser.data;
-      setUserData({ firstName, lastName, phoneNumber, city });
+    if (prefillData) {
+      setUserData({
+        firstName: prefillData.firstName || "",
+        lastName: prefillData.lastName || "",
+        phoneNumber: prefillData.phoneNumber || "",
+        address: prefillData.address || "",
+      });
+    } else if (data?.fetchUser?.status === "success") {
+      const { firstName, lastName, phoneNumber, address } = data.fetchUser.data;
+      setUserData({ firstName, lastName, phoneNumber, address: address || "" });
     }
-  }, [data]);
+  }, [data, prefillData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -64,13 +65,11 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({onInputChange}) => {
     }));
   };
 
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing);
+  const toggleEdit = () => {
+    setIsEditing((prev) => !prev);
   };
 
   const handleSave = () => {
-    // This is where you'd typically make a mutation to save the changes to the backend.
-    // For now, we'll just show a message for demonstration purposes.
     message.success("Changes saved successfully!");
     setIsEditing(false);
   };
@@ -99,7 +98,7 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({onInputChange}) => {
             placeholder="First name"
             value={userData.firstName}
             onChange={handleInputChange}
-            readOnly={!isEditing} // Disable input if not editing
+            readOnly={!isEditing}
           />
         </div>
         <div className={styles.inputGroup}>
@@ -110,7 +109,7 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({onInputChange}) => {
             placeholder="Last name"
             value={userData.lastName}
             onChange={handleInputChange}
-            readOnly={!isEditing} // Disable input if not editing
+            readOnly={!isEditing}
           />
         </div>
         <div className={styles.inputGroup}>
@@ -121,33 +120,25 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({onInputChange}) => {
             placeholder="Phone number"
             value={userData.phoneNumber}
             onChange={handleInputChange}
-            readOnly={!isEditing} // Disable input if not editing
+            readOnly={!isEditing}
           />
         </div>
         <div className={styles.inputGroup}>
-          <label htmlFor="city">City</label>
+          <label htmlFor="address">Address</label>
           <input
             type="text"
-            id="city"
-            placeholder="City"
-            value={userData.city}
+            id="address"
+            placeholder="Address"
+            value={userData.address} // Address remains editable
             onChange={handleInputChange}
-            readOnly={!isEditing} // Disable input if not editing
           />
         </div>
       </form>
 
-      {/* Edit / Save Button */}
       <div className={styles.buttonContainer}>
-        {isEditing ? (
-          <Button className={styles.editSaveButton} type="primary" onClick={handleSave}>
-            Save Changes
-          </Button>
-        ) : (
-          <Button type="default" onClick={handleEditToggle} className={styles.editSaveButton}>
-            Edit Info
-          </Button>
-        )}
+        <Button className={styles.editSaveButton} type="primary" onClick={toggleEdit}>
+          {isEditing ? "Save Changes" : "Edit Info"}
+        </Button>
       </div>
     </div>
   );

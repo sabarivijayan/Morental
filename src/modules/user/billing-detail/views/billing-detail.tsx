@@ -3,7 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GET_RENTABLE_CAR_WITH_ID } from "@/graphql/queries/booking-cars";
 import { GENERATE_PAYMENT_ORDER, VERIFY_PAYMENT_AND_CREATE_BOOKING } from "@/graphql/mutations/booking-cars";
-import { FETCH_USER } from "@/graphql/queries/auth"; // Import your query here
+import { FETCH_USER } from "@/graphql/queries/auth";
 import BillingInfoForm from "../components/billing-info/billing-info";
 import Confirmation from "../components/confirmation-info/confirmation-info";
 import PaymentForm from "../components/payment-info/payment-info";
@@ -12,7 +12,6 @@ import RentalSummary from "../components/summary-info/summary-info";
 import styles from "./billing-detail.module.css";
 import { CarData } from "@/interfaces/cars";
 import Cookies from "js-cookie";
-
 
 const BillingDetailPage = () => {
   const [rentalDays, setRentalDays] = useState(1);
@@ -23,27 +22,44 @@ const BillingDetailPage = () => {
   const [isRentalInfoComplete, setRentalInfoComplete] = useState(false);
   const [isPaymentInfoComplete, setPaymentInfoComplete] = useState(false);
   const [isConfirmationComplete, setConfirmationComplete] = useState(false);
+  const [billingInfo, setBillingInfo] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    address: "",
+  });
+  const [rentalInfo, setRentalInfo] = useState({
+    pickUpDate: new Date(),
+    pickUpTime: '',
+    dropOffDate: new Date(),
+    dropOffTime: '',
+    pickUpLocation: '',
+    dropOffLocation: ''
+  });
 
   useEffect(() => {
-    // Check if token exists in cookies
-    const token = Cookies.get("token"); // Assuming the token is stored under "token"
-
+    const token = Cookies.get("token");
     if (!token) {
-      // If no token is found, redirect to login
       router.push("/registration");
     }
   }, [router]);
-  // Fetch user data
+
   const { data: userData, loading: userLoading } = useQuery(FETCH_USER);
   const userInfo = userData?.fetchUser?.data;
 
-  const handleInputChange = (field: string, isValid: boolean) => {
+  const handleInputChange = (field: string, isValid: boolean, data?: any) => {
     switch (field) {
       case "billingInfo":
         setBillingInfoComplete(isValid);
+        if (data) {
+          setBillingInfo(data);
+        }
         break;
       case "rentalInfo":
         setRentalInfoComplete(isValid);
+        if (data) {
+          setRentalInfo(data);
+        }
         break;
       case "paymentMethod":
         setPaymentInfoComplete(isValid);
@@ -84,31 +100,34 @@ const BillingDetailPage = () => {
     if (!isFormComplete || !carData || !userInfo) return;
 
     try {
-      // Step 1: Ensure Razorpay script is loaded
       const scriptLoaded = await loadRazorpayScript();
       if (!scriptLoaded) {
         alert("Failed to load Razorpay SDK. Please check your internet connection.");
         return;
       }
 
-      // Step 2: Generate payment order
       const totalPrice = carData.pricePerDay * rentalDays;
       const { data: paymentData } = await generatePaymentOrder({
         variables: {
           totalPrice,
           bookingInput: {
             carId: carData.car.id,
-            pickUpDate: new Date().toISOString(),
-            dropOffDate: new Date().toISOString(),
+            pickUpDate: rentalInfo.pickUpDate.toISOString(),
+            pickUpTime: rentalInfo.pickUpTime,
+            dropOffDate: rentalInfo.dropOffDate.toISOString(),
+            dropOffTime: rentalInfo.dropOffTime,
+            pickUpLocation: rentalInfo.pickUpLocation,
+            dropOffLocation: rentalInfo.dropOffLocation,
             totalPrice,
-            userInfo: `${userInfo.firstName} ${userInfo.lastName}`
+            userInfo: `${billingInfo.firstName} ${billingInfo.lastName}`,
+            phoneNumber: billingInfo.phoneNumber,
+            address: billingInfo.address,
           },
         },
       });
 
       const { razorpayOrderId, currency } = paymentData.generatePaymentOrder;
 
-      // Step 3: Initialize Razorpay
       const options = {
         key: "rzp_test_Zil1iQWrfDtlkH",
         amount: totalPrice * 100,
@@ -117,7 +136,6 @@ const BillingDetailPage = () => {
         name: "Car Rental",
         description: "Payment for car rental",
         handler: async function (response: any) {
-          // Step 4: Verify payment and create booking
           const { data: verifyData } = await verifyPaymentAndCreateBooking({
             variables: {
               paymentDetails: {
@@ -127,10 +145,16 @@ const BillingDetailPage = () => {
               },
               bookingInput: {
                 carId: carData.car.id,
-                pickUpDate: new Date().toISOString(),
-                dropOffDate: new Date().toISOString(),
+                pickUpDate: rentalInfo.pickUpDate.toISOString(),
+                pickUpTime: rentalInfo.pickUpTime,
+                dropOffDate: rentalInfo.dropOffDate.toISOString(),
+                dropOffTime: rentalInfo.dropOffTime,
+                pickUpLocation: rentalInfo.pickUpLocation,
+                dropOffLocation: rentalInfo.dropOffLocation,
                 totalPrice,
-                userInfo: `${userInfo.firstName} ${userInfo.lastName}`
+                userInfo: `${billingInfo.firstName} ${billingInfo.lastName}`,
+                phoneNumber: billingInfo.phoneNumber,
+                address: billingInfo.address,
               },
             },
           });
@@ -142,9 +166,9 @@ const BillingDetailPage = () => {
           }
         },
         prefill: {
-          name: `${userInfo.firstName} ${userInfo.lastName}`,
+          name: `${billingInfo.firstName} ${billingInfo.lastName}`,
           email: userInfo.email,
-          contact: userInfo.phoneNumber,
+          contact: billingInfo.phoneNumber,
         },
         theme: {
           color: "#F37254",

@@ -2,6 +2,7 @@
 
 export interface Booking {
     id: string;
+    carImage: string;
     carModel: string;
     carType: string;
     pickUpLocation: string;
@@ -11,6 +12,7 @@ export interface Booking {
     dropOffDate: string;
     dropOffTime: string;
     price: string;
+    address: string;
   }
   
   export interface RentalDetailsProps {

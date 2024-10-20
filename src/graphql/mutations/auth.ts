@@ -75,3 +75,32 @@ export const UPDATE_PROFILE_IMAGE = gql`
     }
   }
 `;
+
+export const UPDATE_USER_PROFILE = gql`
+  mutation UpdateUserProfile($userId: ID!, $input: UpdateProfileInput!) {
+    updateUserProfile(userId: $userId, input: $input) {
+      status
+      message
+      data {
+        id
+        firstName
+        lastName
+        email
+        city
+        state
+        country
+        pincode
+        profileImage
+      }
+    }
+  }
+`;
+
+export const UPDATE_PASSWORD = gql`
+  mutation UpdatePassword($userId: ID!, $input: UpdatePasswordInput!) {
+    updatePassword(userId: $userId, input: $input) {
+      status
+      message
+    }
+  }
+`;

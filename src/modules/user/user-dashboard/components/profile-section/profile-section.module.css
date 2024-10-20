@@ -1,69 +1,71 @@
-/* profile-section.module.css */
-
-.container {
-  padding: 40px;
+.dashboardContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.profileRow {
-  margin-bottom: 50px;
-}
-
-.centerContent {
+.avatarContainer {
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.profilePicModern {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.uploadModern {
-  margin-top: 20px;
-}
-
-.changePicButton, .uploadButtonModern {
-  margin-top: 10px;
-  width: 200px;
-}
-
-.userInfoContainerModern {
-  width: 100%;
-  max-width: 600px;
-  background: #f9f9f9;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.userInfoHeaderModern {
   margin-bottom: 20px;
 }
 
-.userInfoTitleModern {
-  font-size: 24px;
+.uploadButton {
+  display: block;
+  margin: 20px auto;
 }
 
-.editButtonModern {
-  font-size: 18px;
+.tabsContainer {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.formModern .labelModern {
-  font-size: 16px;
-  color: #888;
+.formContainer {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.inputModern {
-  font-size: 16px;
-  border-radius: 6px;
-  padding: 12px;
-}
-
-.saveButtonModern {
+.actionButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
   margin-top: 20px;
-  width: 100%;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 6px;
+}
+
+.tableContainer {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .dashboardContainer {
+    padding: 10px;
+  }
+
+  .formContainer {
+    max-width: 100%;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actionButtons button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .uploadButton {
+    width: 100%;
+  }
+
+  .tabsContainer {
+    padding: 10px;
+  }
 }

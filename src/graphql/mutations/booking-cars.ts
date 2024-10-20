@@ -11,7 +11,7 @@ export const ADD_CAR_TO_TYPESENSE = gql`
 export const GENERATE_PAYMENT_ORDER = gql`
   mutation GeneratePaymentOrder($totalPrice: Float!, $bookingInput: GenerateBookingInput!) {
     generatePaymentOrder(totalPrice: $totalPrice, bookingInput: $bookingInput) {
-      state
+      status
       message
       razorpayOrderId
       amount
@@ -30,7 +30,13 @@ export const VERIFY_PAYMENT_AND_CREATE_BOOKING = gql`
         carId
         userId
         pickUpDate
+        pickUpTime
         dropOffDate
+        dropOffTime
+        pickUpLocation
+        dropOffLocation
+        phoneNumber
+        address
         totalPrice
         status
         createdAt
