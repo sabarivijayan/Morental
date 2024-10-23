@@ -191,7 +191,7 @@ const UserDashboard: React.FC = () => {
   const columns = [
     {
       title: "Car",
-      dataIndex: ["rentable"],
+      dataIndex: ["rentable", "car"],
       key: "car",
       render: (_: any, record: BookingData) => {
         const car = record.rentable?.car;
