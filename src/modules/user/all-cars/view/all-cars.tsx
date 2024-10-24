@@ -16,7 +16,7 @@ const AllCarsComponent = () => {
   });
 
   // State for pickup and drop-off dates
-  const [pickUpDate, setPickUpDate] = useState<string>("");
+  const [pickUpDate, setPickUpDate] = useState<string>(""); // Initialize to empty string
   const [dropOffDate, setDropOffDate] = useState<string>("");
 
   // Update the filters when they change in the sidebar
@@ -26,8 +26,8 @@ const AllCarsComponent = () => {
 
   // Handle date changes from PickupForm and pass them to CarDisplay
   const handleDateChange = (pickUpDate: string, dropOffDate: string) => {
-    setPickUpDate(pickUpDate);
-    setDropOffDate(dropOffDate);
+    setPickUpDate(pickUpDate); // Update the state for pick-up date
+    setDropOffDate(dropOffDate); // Update the state for drop-off date
   };
 
   return (
@@ -45,7 +45,11 @@ const AllCarsComponent = () => {
         </div>
         <div className={styles.carGridContainer}>
           {/* Pass filters, pickUpDate, and dropOffDate to CarDisplay */}
-          <CarDisplay filters={filters} pickUpDate={pickUpDate} dropOffDate={dropOffDate} />
+          <CarDisplay
+            filters={filters}
+            pickUpDate={pickUpDate}
+            dropOffDate={dropOffDate}
+          />
         </div>
       </div>
     </div>

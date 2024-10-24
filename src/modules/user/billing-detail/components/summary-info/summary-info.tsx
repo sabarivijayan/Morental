@@ -27,12 +27,7 @@ const RentalSummary: React.FC<RentalSummaryProps> = ({
         />
         <div className={styles.carDetails}>
           <h3 className={styles.carName}>{carData.car.name}</h3>
-          <div className={styles.rating}>
-            <span className={styles.stars}>★★★★☆</span>
-            <span className={styles.reviews}>
-              {carData.reviewsCount || 0} Reviewer
-            </span>
-          </div>
+          
         </div>
       </div>
       <div className={styles.pricing}>
@@ -45,14 +40,7 @@ const RentalSummary: React.FC<RentalSummaryProps> = ({
           <span>$0</span>
         </div>
       </div>
-      <div className={styles.promoSection}>
-        <input
-          type="text"
-          placeholder="Apply promo code"
-          className={styles.promoInput}
-        />
-        <button className={styles.applyButton}>Apply now</button>
-      </div>
+      
       <div className={styles.totalPrice}>
         <span>Total Rental Price</span>
         <span className={styles.price}>${totalPrice}</span>

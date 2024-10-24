@@ -13,6 +13,7 @@ import styles from "./billing-detail.module.css";
 import { CarData } from "@/interfaces/cars";
 import Cookies from "js-cookie";
 import confetti from "canvas-confetti";
+import Swal from "sweetalert2";
 
 
 const BillingDetailPage = () => {
@@ -107,7 +108,11 @@ const BillingDetailPage = () => {
     try {
       const scriptLoaded = await loadRazorpayScript();
       if (!scriptLoaded) {
-        alert("Failed to load Razorpay SDK. Please check your internet connection.");
+        Swal.fire({
+          icon: "error",
+          title: "SDK Load Failure",
+          text: "Failed to load Razorpay SDK. Please check your internet connection.",
+        });
         return;
       }
 
@@ -152,6 +157,7 @@ const BillingDetailPage = () => {
                 },
                 bookingInput: {
                   carId: parseInt(carData.car.id,10),
+                  rentableId: parseInt(id,10),
                   pickUpDate: rentalInfo.pickUpDate.toISOString(),
                   pickUpTime: rentalInfo.pickUpTime,
                   dropOffDate: rentalInfo.dropOffDate.toISOString(),
@@ -177,16 +183,27 @@ const BillingDetailPage = () => {
               });
   
               router.push("/user-dashboard");
-            } else {
-              throw new Error("Payment verification failed");
-            }
-          } catch (error) {
-            // Play error audio on payment failure
+          } else {
+            throw new Error("Payment verification failed");
+          }
+        } catch (error: any) {
+          if (error.message.includes("")) {
+            Swal.fire({
+              icon: "error",
+              title: "Car Unavailable",
+              text: "The car is not available for the selected dates. Please try other dates or cars.",
+            });
+          } else {
             const errorAudio = new Audio("/error-sound.mp3");
             errorAudio.play();
-            alert("Payment verification failed. Please try again.");
+            Swal.fire({
+              icon: "error",
+              title: "Payment Failed",
+              text: "Payment verification failed. Please try again.",
+            });
           }
-        },
+        }
+      },
         prefill: {
           name: `${billingInfo.firstName} ${billingInfo.lastName}`,
           email: userInfo.email,
@@ -201,7 +218,11 @@ const BillingDetailPage = () => {
       rzp.open();
     } catch (error) {
       console.error("Error processing payment:", error);
-      alert("Payment processing failed. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Car Unavailable",
+        text: "The car is not available for the selected dates. Please try other dates or cars.",
+      });
     }
   };
 

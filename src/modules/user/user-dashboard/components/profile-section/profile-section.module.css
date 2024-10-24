@@ -41,6 +41,9 @@
 
 /* Responsive styles */
 @media (max-width: 768px) {
+  .avatarContainer{
+    padding-top: 70px;
+  }
   .dashboardContainer {
     padding: 10px;
   }

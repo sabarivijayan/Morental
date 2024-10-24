@@ -17,6 +17,7 @@ const FilterSidebar = ({
   const [price, setPrice] = useState<number>(100);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [priceSortOrder, setPriceSortOrder] = useState<string>("");
 
   useEffect(() => {
     // Call the parent component's onFilterChange whenever filters change
@@ -25,7 +26,7 @@ const FilterSidebar = ({
       transmissionType: selectedTypes,
       fuelType: selectedFuel,
       numberOfSeats: selectedCapacity,
-      priceSort: price.toString(),
+      priceSort: priceSortOrder,
     });
   }, [searchQuery, selectedTypes, selectedFuel, selectedCapacity, price]);
 
@@ -63,6 +64,9 @@ const FilterSidebar = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value); // Update the search query from input change
+  };
+  const handlePriceSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setPriceSortOrder(e.target.value); // Update the sorting order when the user changes it
   };
 
   return (
@@ -147,20 +151,6 @@ const FilterSidebar = ({
                 {capacity.label}{" "}
               </label>
             ))}
-          </div>
-
-          {/* Price Section */}
-          <div className={styles.filterSection}>
-            <h4 className={styles.sectionTitle}>Price</h4>
-            <input
-              type="range"
-              className={styles.priceRange}
-              min={0}
-              max={10000}
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
-            />
-            <p className={styles.priceLabel}>Max. ${price.toFixed(2)}</p>
           </div>
         </div>
       </div>
