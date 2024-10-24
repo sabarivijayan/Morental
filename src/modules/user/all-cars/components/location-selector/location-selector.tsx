@@ -1,9 +1,25 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./location-selector.module.css";
 
-const PickupForm: React.FC = () => {
+interface PickupFormProps {
+  onDateChange?: (pickUpDate: string, dropOffDate: string, pickUpTime: string, dropOffTime: string) => void;
+}
+
+const PickupForm: React.FC<PickupFormProps> = ({ onDateChange }) => {
+  const [pickUpDate, setPickUpDate] = useState("");
+  const [dropOffDate, setDropOffDate] = useState("");
+  const [pickUpTime, setPickUpTime] = useState("");
+  const [dropOffTime, setDropOffTime] = useState("");
+
+  useEffect(() => {
+    if (onDateChange) {
+      // Notify parent when dates or times change
+      onDateChange(pickUpDate, dropOffDate, pickUpTime, dropOffTime);
+    }
+  }, [pickUpDate, dropOffDate, pickUpTime, dropOffTime]);
+
   return (
     <div className={styles.container}>
       {/* Pick-Up Section */}
@@ -16,22 +32,16 @@ const PickupForm: React.FC = () => {
           </div>
 
           <div className={styles.formFields}>
-            {/* Locations Field */}
-            <div className={styles.field}>
-              <label className={styles.boldText}>Locations</label>
-              <select className={styles.input}>
-                <option>Select your city</option>
-              </select>
-            </div>
-
-            {/* Divider */}
-            <div className={styles.divider}></div>
-
             {/* Date Field */}
             <div className={styles.field}>
               <label className={styles.boldText}>Date</label>
               <div className={styles.inputWithIcon}>
-                <input className={styles.input} type="date" />
+                <input
+                  className={styles.input}
+                  type="date"
+                  value={pickUpDate}
+                  onChange={(e) => setPickUpDate(e.target.value)}
+                />
               </div>
             </div>
 
@@ -41,7 +51,13 @@ const PickupForm: React.FC = () => {
             {/* Time Field */}
             <div className={styles.field}>
               <label className={styles.boldText}>Time</label>
-              <input className={styles.input} type="time" step={1800} />
+              <input
+                className={styles.input}
+                type="time"
+                step={1800}
+                value={pickUpTime}
+                onChange={(e) => setPickUpTime(e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -49,10 +65,11 @@ const PickupForm: React.FC = () => {
 
       {/* Swap Button */}
       <div className={styles.swapButtonWrapper}>
-      <button className={styles.swapButton}>
-        <Image src="/icons/Swap.svg" alt="Swap Arrows" width={24} height={24} />
-      </button>
+        <button className={styles.swapButton}>
+          <Image src="/icons/Swap.svg" alt="Swap Arrows" width={24} height={24} />
+        </button>
       </div>
+
       {/* Drop-Off Section */}
       <div className={styles.formGroup}>
         <div className={styles.section}>
@@ -63,22 +80,16 @@ const PickupForm: React.FC = () => {
           </div>
 
           <div className={styles.formFields}>
-            {/* Locations Field */}
-            <div className={styles.field}>
-              <label className={styles.boldText}>Locations</label>
-              <select className={styles.input}>
-                <option>Select your city</option>
-              </select>
-            </div>
-
-            {/* Divider */}
-            <div className={styles.divider}></div>
-
             {/* Date Field */}
             <div className={styles.field}>
               <label className={styles.boldText}>Date</label>
               <div className={styles.inputWithIcon}>
-                <input className={styles.input} type="date" />
+                <input
+                  className={styles.input}
+                  type="date"
+                  value={dropOffDate}
+                  onChange={(e) => setDropOffDate(e.target.value)}
+                />
               </div>
             </div>
 
@@ -88,7 +99,13 @@ const PickupForm: React.FC = () => {
             {/* Time Field */}
             <div className={styles.field}>
               <label className={styles.boldText}>Time</label>
-              <input className={styles.input} type="time" step={1800} />
+              <input
+                className={styles.input}
+                type="time"
+                step={1800}
+                value={dropOffTime}
+                onChange={(e) => setDropOffTime(e.target.value)}
+              />
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@
   flex-wrap: nowrap; /* No wrapping on larger screens to maintain horizontal layout */
 }
 
+/* Each form group (Pick-up or Drop-off) styling */
 .formGroup {
   width: 100%;
   max-width: 582px;
@@ -22,6 +23,7 @@
   box-sizing: border-box;
 }
 
+/* Styling for sections within each formGroup */
 .section {
   flex: 1;
   display: flex;
@@ -30,6 +32,7 @@
   padding: 1rem;
 }
 
+/* Label container for Pick-up and Drop-off titles */
 .labelContainer {
   display: flex;
   align-items: center;
@@ -37,7 +40,7 @@
   position: relative;
 }
 
-/* Breathing Effect */
+/* Breathing animation for radio indicators */
 @keyframes breathing {
   0% {
     transform: scale(1);
@@ -53,6 +56,7 @@
   }
 }
 
+/* Secondary breathing animation for outer ring */
 @keyframes breathing2 {
   0% {
     transform: scale(1);
@@ -68,7 +72,7 @@
   }
 }
 
-/* Original Styling */
+/* Radio button styling with animations */
 .radioIndicator {
   position: relative;
   left: -2.5px;
@@ -91,13 +95,13 @@
   animation: breathing2 2.5s ease-in-out infinite;
 }
 
-
 .boldText {
   font-weight: bold;
   color: #333;
   font-size: 1rem;
 }
 
+/* Form fields for date and time input */
 .formFields {
   display: flex;
   align-items: center;
@@ -146,12 +150,14 @@
   color: #aaa;
 }
 
+/* Divider for separating fields */
 .divider {
   width: 1px;
   height: 60px;
   background-color: #ddd;
 }
 
+/* Swap button styling */
 .swapButton {
   background-color: #3461ff;
   border: none;

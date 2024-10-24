@@ -12,6 +12,8 @@ import RentalSummary from "../components/summary-info/summary-info";
 import styles from "./billing-detail.module.css";
 import { CarData } from "@/interfaces/cars";
 import Cookies from "js-cookie";
+import confetti from "canvas-confetti";
+
 
 const BillingDetailPage = () => {
   const [rentalDays, setRentalDays] = useState(1);
@@ -97,6 +99,9 @@ const BillingDetailPage = () => {
   };
 
   const handleRentNow = async () => {
+    const audio = new Audio("/car-rev.mp3");
+    audio.play();
+
     if (!isFormComplete || !carData || !userInfo) return;
 
     try {
@@ -111,7 +116,8 @@ const BillingDetailPage = () => {
         variables: {
           totalPrice,
           bookingInput: {
-            carId: carData.car.id,
+            rentableId: parseInt(id,10),
+            carId: parseInt(carData.car.id,10),
             pickUpDate: rentalInfo.pickUpDate.toISOString(),
             pickUpTime: rentalInfo.pickUpTime,
             dropOffDate: rentalInfo.dropOffDate.toISOString(),
@@ -136,33 +142,49 @@ const BillingDetailPage = () => {
         name: "Car Rental",
         description: "Payment for car rental",
         handler: async function (response: any) {
-          const { data: verifyData } = await verifyPaymentAndCreateBooking({
-            variables: {
-              paymentDetails: {
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpayOrderId: response.razorpay_order_id,
-                razorpaySignature: response.razorpay_signature,
+          try {
+            const { data: verifyData } = await verifyPaymentAndCreateBooking({
+              variables: {
+                paymentDetails: {
+                  razorpayPaymentId: response.razorpay_payment_id,
+                  razorpayOrderId: response.razorpay_order_id,
+                  razorpaySignature: response.razorpay_signature,
+                },
+                bookingInput: {
+                  carId: parseInt(carData.car.id,10),
+                  pickUpDate: rentalInfo.pickUpDate.toISOString(),
+                  pickUpTime: rentalInfo.pickUpTime,
+                  dropOffDate: rentalInfo.dropOffDate.toISOString(),
+                  dropOffTime: rentalInfo.dropOffTime,
+                  pickUpLocation: rentalInfo.pickUpLocation,
+                  dropOffLocation: rentalInfo.dropOffLocation,
+                  totalPrice,
+                  userInfo: `${billingInfo.firstName} ${billingInfo.lastName}`,
+                  phoneNumber: billingInfo.phoneNumber,
+                  address: billingInfo.address,
+                },
               },
-              bookingInput: {
-                carId: carData.car.id,
-                pickUpDate: rentalInfo.pickUpDate.toISOString(),
-                pickUpTime: rentalInfo.pickUpTime,
-                dropOffDate: rentalInfo.dropOffDate.toISOString(),
-                dropOffTime: rentalInfo.dropOffTime,
-                pickUpLocation: rentalInfo.pickUpLocation,
-                dropOffLocation: rentalInfo.dropOffLocation,
-                totalPrice,
-                userInfo: `${billingInfo.firstName} ${billingInfo.lastName}`,
-                phoneNumber: billingInfo.phoneNumber,
-                address: billingInfo.address,
-              },
-            },
-          });
-
-          if (verifyData.verifyPaymentAndCreateBooking.status === "success") {
-            router.push("/user-dashboard");
-          } else {
-            alert("Payment verification failed");
+            });
+  
+            if (verifyData.verifyPaymentAndCreateBooking.status === "success") {
+              // Confetti effect for successful payment
+              const successAudio = new Audio("/success.mp3");
+              successAudio.play();
+              confetti({
+                particleCount: 200,
+                spread: 70,
+                origin: { y: 0.6 },
+              });
+  
+              router.push("/user-dashboard");
+            } else {
+              throw new Error("Payment verification failed");
+            }
+          } catch (error) {
+            // Play error audio on payment failure
+            const errorAudio = new Audio("/error-sound.mp3");
+            errorAudio.play();
+            alert("Payment verification failed. Please try again.");
           }
         },
         prefill: {
@@ -171,7 +193,7 @@ const BillingDetailPage = () => {
           contact: billingInfo.phoneNumber,
         },
         theme: {
-          color: "#F37254",
+          color: "#3563E9",
         },
       };
 

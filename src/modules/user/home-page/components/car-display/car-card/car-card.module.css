@@ -90,28 +90,139 @@
         width: 250px;
         height: 420px;
     }
+
+    .carTitle {
+        font-size: 16px;
+    }
+
+    .carCategory {
+        font-size: 13px;
+    }
+
+    .carPrice {
+        font-size: 22px;
+    }
+
+    .rentButton {
+        font-size: 13px;
+        padding: 8px 14px;
+    }
 }
 
-/* Mobile View - Small Screens (below 768px) */
+/* Mobile View - Small Screens (between 480px and 768px) */
 @media (max-width: 768px) {
     .carCard {
         width: 220px;
         height: 400px;
     }
+
+    .carTitle {
+        font-size: 15px;
+    }
+
+    .carCategory {
+        font-size: 12px;
+    }
+
+    .carPrice {
+        font-size: 20px;
+    }
+
+    .rentButton {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
 }
 
-/* Small Mobile View (below 480px) */
+/* Small Mobile View - Extra Small Screens (below 480px) */
 @media (max-width: 480px) {
     .carCard {
         width: 200px;
         height: 380px;
+        padding: 12px;
+    }
+
+    .carTitle {
+        font-size: 14px;
+    }
+
+    .carCategory {
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+
+    .carPrice {
+        font-size: 18px;
+    }
+
+    .rentButton {
+        font-size: 11px;
+        padding: 8px 10px;
+    }
+
+    .carInfo {
+        margin: 12px 0;
     }
 }
 
-/* Extra Large Screens (above 1024px) */
-@media (min-width: 1200px) {
+/* Ultra Small Mobile View - Below 360px */
+@media (max-width: 360px) {
     .carCard {
-        width: 300px;
-        height: 450px;
+        width: 180px;
+        height: 360px;
+        padding: 10px;
+    }
+
+    .carTitle {
+        font-size: 13px;
+    }
+
+    .carCategory {
+        font-size: 10px;
+        margin-bottom: 8px;
+    }
+
+    .carPrice {
+        font-size: 16px;
+    }
+
+    .rentButton {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+
+    .carInfo {
+        margin: 10px 0;
+    }
+}
+
+/* Tiny Screen View - Below 320px */
+@media (max-width: 320px) {
+    .carCard {
+        width: 190px;
+        height: 340px;
+        padding: 8px;
+    }
+
+    .carTitle {
+        font-size: 12px;
+    }
+
+    .carCategory {
+        font-size: 9px;
+        margin-bottom: 6px;
+    }
+
+    .carPrice {
+        font-size: 14px;
+    }
+
+    .rentButton {
+        font-size: 9px;
+        padding: 5px 6px;
+    }
+
+    .carInfo {
+        margin: 8px 0;
     }
 }

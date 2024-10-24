@@ -66,25 +66,7 @@ const PickupForm: React.FC = () => {
           </div>
 
           <div className={styles.formFields}>
-            {/* Locations Field */}
-            <div className={styles.field}>
-              <label className={styles.boldText}>Locations</label>
-              <select
-                className={styles.input}
-                value={pickupCity}
-                onChange={(e) => setPickupCity(e.target.value)}
-              >
-                <option value="">Select your city</option>
-                {cities.map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
-            </div>
 
-            {/* Divider */}
-            <div className={styles.divider}></div>
 
             {/* Date Field */}
             <div className={styles.field}>
@@ -133,25 +115,6 @@ const PickupForm: React.FC = () => {
           </div>
 
           <div className={styles.formFields}>
-            {/* Locations Field */}
-            <div className={styles.field}>
-              <label className={styles.boldText}>Locations</label>
-              <select
-                className={styles.input}
-                value={dropOffCity}
-                onChange={(e) => setDropOffCity(e.target.value)}
-              >
-                <option value="">Select your city</option>
-                {cities.map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Divider */}
-            <div className={styles.divider}></div>
 
             {/* Date Field */}
             <div className={styles.field}>
