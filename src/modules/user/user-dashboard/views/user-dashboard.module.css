@@ -46,6 +46,7 @@
 /* Small screen adjustments (mobile devices) */
 @media (max-width: 768px) {
   .dashboardContainer {
+    
     padding: 20px 16px;
     flex-direction: column;
     align-items: center;

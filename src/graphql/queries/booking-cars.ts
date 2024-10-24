@@ -33,34 +33,55 @@ export const GET_RENTABLE_CAR_WITH_ID = gql`
 `;
 
 export const GET_AVAILABLE_CARS = gql`
-  query GetAvailableCars($pickUpDate: String!, $dropOffDate: String!) {
-    getAvailableCars(pickUpDate: $pickUpDate, dropOffDate: $dropOffDate) {
-      id
-      carId
-      pricePerDay
-      availableQuantity
-      car {
+  query GetAvailableCars(
+    $pickUpDate: String!
+    $dropOffDate: String!
+    $query: String
+    $transmissionType: [String]
+    $fuelType: [String]
+    $numberOfSeats: [Int]
+    $priceSort: String
+  ) {
+    getAvailableCars(
+      pickUpDate: $pickUpDate
+      dropOffDate: $dropOffDate
+      query: $query
+      transmissionType: $transmissionType
+      fuelType: $fuelType
+      numberOfSeats: $numberOfSeats
+      priceSort: $priceSort
+    ) {
+      status
+      message
+      data {
         id
-        name
-        type
-        numberOfSeats
-        fuelType
-        transmissionType
-        description
-        quantity
-        manufacturerId
-        primaryImageUrl
-        secondaryImagesUrls
-        year
-        manufacturer {
+        carId
+        pricePerDay
+        availableQuantity
+        car {
           id
           name
-          country
+          type
+          numberOfSeats
+          fuelType
+          transmissionType
+          description
+          quantity
+          manufacturerId
+          primaryImageUrl
+          secondaryImagesUrls
+          year
+          manufacturer {
+            id
+            name
+            country
+          }
         }
       }
     }
   }
 `;
+
 
 export const GET_RENTABLE_CARS = gql`
   query GetRentableCars {

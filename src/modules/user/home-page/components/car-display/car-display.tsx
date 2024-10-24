@@ -81,8 +81,12 @@ const CarDisplay = () => {
           navigation
           breakpoints={{
             0: {
-              slidesPerView: 2,
+              slidesPerView: 1,
               centeredSlides: false,
+            },
+            480:{
+              slidesPerView: 1,
+              centeredSlides: true,
             },
             640: {
               slidesPerView: 2,

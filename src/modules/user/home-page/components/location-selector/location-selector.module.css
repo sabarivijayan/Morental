@@ -2,16 +2,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 44px;
-  padding: 12px 64px;
+  padding: 12px 0;
+  justify-content: center;
+  gap: 32px;
   box-sizing: border-box;
   max-width: 100%; /* Prevent overflow */
   flex-wrap: nowrap; /* No wrapping on larger screens to maintain horizontal layout */
+  
 }
 
+/* Each form group (Pick-up or Drop-off) styling */
 .formGroup {
   width: 100%;
-  max-width: 582px;
+  max-width: 400px;
   height: 132px;
   display: flex;
   align-items: center;
@@ -22,6 +25,7 @@
   box-sizing: border-box;
 }
 
+/* Styling for sections within each formGroup */
 .section {
   flex: 1;
   display: flex;
@@ -30,6 +34,7 @@
   padding: 1rem;
 }
 
+/* Label container for Pick-up and Drop-off titles */
 .labelContainer {
   display: flex;
   align-items: center;
@@ -37,7 +42,7 @@
   position: relative;
 }
 
-/* Breathing Effect */
+/* Breathing animation for radio indicators */
 @keyframes breathing {
   0% {
     transform: scale(1);
@@ -53,6 +58,7 @@
   }
 }
 
+/* Secondary breathing animation for outer ring */
 @keyframes breathing2 {
   0% {
     transform: scale(1);
@@ -68,7 +74,7 @@
   }
 }
 
-/* Original Styling */
+/* Radio button styling with animations */
 .radioIndicator {
   position: relative;
   left: -2.5px;
@@ -91,13 +97,13 @@
   animation: breathing2 2.5s ease-in-out infinite;
 }
 
-
 .boldText {
   font-weight: bold;
   color: #333;
   font-size: 1rem;
 }
 
+/* Form fields for date and time input */
 .formFields {
   display: flex;
   align-items: center;
@@ -146,12 +152,14 @@
   color: #aaa;
 }
 
+/* Divider for separating fields */
 .divider {
   width: 1px;
   height: 60px;
   background-color: #ddd;
 }
 
+/* Swap button styling */
 .swapButton {
   background-color: #3461ff;
   border: none;
@@ -176,6 +184,8 @@
 /* For screens between 1024px and 1200px */
 @media (max-width: 1200px) {
   .container {
+    display: flex;
+    flex-direction: column;
     padding: 12px 48px;
     gap: 30px;
     justify-content: center; /* Center the content for mid-range screens */
@@ -183,7 +193,7 @@
   }
 
   .formGroup {
-    max-width: 100%;
+    max-width: 450px;
     height: auto; /* Allow height to adjust based on content */
     padding: 1rem;
   }
@@ -204,9 +214,10 @@
 /* Medium screens (Tablets and small desktops) */
 @media (max-width: 1024px) {
   .container {
-    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 12px 0;
     gap: 30px;
-    flex-direction: row; /* Maintain horizontal alignment */
     flex-wrap: wrap; /* Wrap if needed */
   }
 
@@ -232,6 +243,7 @@
 /* Small screens (Tablets) */
 @media (max-width: 768px) {
   .container {
+    display: flex;
     padding: 32px;
     flex-direction: column;
     gap: 1rem;
@@ -265,6 +277,7 @@
   }
 
   .formGroup {
+    max-width: 270px;
     padding: 0.5rem;
   }
 

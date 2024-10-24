@@ -102,7 +102,8 @@
 /* Responsive Styling */
 
 /* Large screens (Desktops) */
-@media (min-width: 1024px) {
+/* Large screens (Desktops) */
+@media (min-width: 1025px) { /* Change to 1025px to apply desktop styles above 1024px */
   .sidebar {
     transform: translateX(0); /* Ensure sidebar is visible on large screens */
     opacity: 1;
@@ -123,7 +124,7 @@
 }
 
 /* Tablets and mobile screens */
-@media (max-width: 1024px) {
+@media (max-width: 1024px) { /* Apply mobile styles at exactly 1024px and below */
   .sidebar {
     position: fixed;
     left: 0;
@@ -133,12 +134,27 @@
     z-index: 999;
     background-color: #fff;
     border-right: 1px solid #eaeaea;
-    /* Hidden by default */
-    opacity: 1;
+    transform: translateX(-100%); /* Hide the sidebar by default */
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
   .filterIcon {
-    display: block; /* Show filter icon */
+    display: block; /* Show filter icon on mobile/tablet */
+  }
+
+  .closeButton {
+    display: block; /* Show close button in mobile mode */
+  }
+
+  .sidebar.active {
+    transform: translateX(0); /* Sidebar slides in */
+    opacity: 1;
+  }
+
+  .sidebar.hidden {
+    transform: translateX(-100%); /* Sidebar slides out */
+    opacity: 0;
   }
 }
 

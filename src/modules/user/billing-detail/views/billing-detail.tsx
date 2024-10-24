@@ -12,6 +12,9 @@ import RentalSummary from "../components/summary-info/summary-info";
 import styles from "./billing-detail.module.css";
 import { CarData } from "@/interfaces/cars";
 import Cookies from "js-cookie";
+import confetti from "canvas-confetti";
+import Swal from "sweetalert2";
+
 
 const BillingDetailPage = () => {
   const [rentalDays, setRentalDays] = useState(1);
@@ -97,12 +100,19 @@ const BillingDetailPage = () => {
   };
 
   const handleRentNow = async () => {
+    const audio = new Audio("/car-rev.mp3");
+    audio.play();
+
     if (!isFormComplete || !carData || !userInfo) return;
 
     try {
       const scriptLoaded = await loadRazorpayScript();
       if (!scriptLoaded) {
-        alert("Failed to load Razorpay SDK. Please check your internet connection.");
+        Swal.fire({
+          icon: "error",
+          title: "SDK Load Failure",
+          text: "Failed to load Razorpay SDK. Please check your internet connection.",
+        });
         return;
       }
 
@@ -111,7 +121,8 @@ const BillingDetailPage = () => {
         variables: {
           totalPrice,
           bookingInput: {
-            carId: carData.car.id,
+            rentableId: parseInt(id,10),
+            carId: parseInt(carData.car.id,10),
             pickUpDate: rentalInfo.pickUpDate.toISOString(),
             pickUpTime: rentalInfo.pickUpTime,
             dropOffDate: rentalInfo.dropOffDate.toISOString(),
@@ -136,42 +147,70 @@ const BillingDetailPage = () => {
         name: "Car Rental",
         description: "Payment for car rental",
         handler: async function (response: any) {
-          const { data: verifyData } = await verifyPaymentAndCreateBooking({
-            variables: {
-              paymentDetails: {
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpayOrderId: response.razorpay_order_id,
-                razorpaySignature: response.razorpay_signature,
+          try {
+            const { data: verifyData } = await verifyPaymentAndCreateBooking({
+              variables: {
+                paymentDetails: {
+                  razorpayPaymentId: response.razorpay_payment_id,
+                  razorpayOrderId: response.razorpay_order_id,
+                  razorpaySignature: response.razorpay_signature,
+                },
+                bookingInput: {
+                  carId: parseInt(carData.car.id,10),
+                  rentableId: parseInt(id,10),
+                  pickUpDate: rentalInfo.pickUpDate.toISOString(),
+                  pickUpTime: rentalInfo.pickUpTime,
+                  dropOffDate: rentalInfo.dropOffDate.toISOString(),
+                  dropOffTime: rentalInfo.dropOffTime,
+                  pickUpLocation: rentalInfo.pickUpLocation,
+                  dropOffLocation: rentalInfo.dropOffLocation,
+                  totalPrice,
+                  userInfo: `${billingInfo.firstName} ${billingInfo.lastName}`,
+                  phoneNumber: billingInfo.phoneNumber,
+                  address: billingInfo.address,
+                },
               },
-              bookingInput: {
-                carId: carData.car.id,
-                pickUpDate: rentalInfo.pickUpDate.toISOString(),
-                pickUpTime: rentalInfo.pickUpTime,
-                dropOffDate: rentalInfo.dropOffDate.toISOString(),
-                dropOffTime: rentalInfo.dropOffTime,
-                pickUpLocation: rentalInfo.pickUpLocation,
-                dropOffLocation: rentalInfo.dropOffLocation,
-                totalPrice,
-                userInfo: `${billingInfo.firstName} ${billingInfo.lastName}`,
-                phoneNumber: billingInfo.phoneNumber,
-                address: billingInfo.address,
-              },
-            },
-          });
-
-          if (verifyData.verifyPaymentAndCreateBooking.status === "success") {
-            router.push("/user-dashboard");
+            });
+  
+            if (verifyData.verifyPaymentAndCreateBooking.status === "success") {
+              // Confetti effect for successful payment
+              const successAudio = new Audio("/success.mp3");
+              successAudio.play();
+              confetti({
+                particleCount: 200,
+                spread: 70,
+                origin: { y: 0.6 },
+              });
+  
+              router.push("/user-dashboard");
           } else {
-            alert("Payment verification failed");
+            throw new Error("Payment verification failed");
           }
-        },
+        } catch (error: any) {
+          if (error.message.includes("")) {
+            Swal.fire({
+              icon: "error",
+              title: "Car Unavailable",
+              text: "The car is not available for the selected dates. Please try other dates or cars.",
+            });
+          } else {
+            const errorAudio = new Audio("/error-sound.mp3");
+            errorAudio.play();
+            Swal.fire({
+              icon: "error",
+              title: "Payment Failed",
+              text: "Payment verification failed. Please try again.",
+            });
+          }
+        }
+      },
         prefill: {
           name: `${billingInfo.firstName} ${billingInfo.lastName}`,
           email: userInfo.email,
           contact: billingInfo.phoneNumber,
         },
         theme: {
-          color: "#F37254",
+          color: "#3563E9",
         },
       };
 
@@ -179,7 +218,11 @@ const BillingDetailPage = () => {
       rzp.open();
     } catch (error) {
       console.error("Error processing payment:", error);
-      alert("Payment processing failed. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Car Unavailable",
+        text: "The car is not available for the selected dates. Please try other dates or cars.",
+      });
     }
   };
 
