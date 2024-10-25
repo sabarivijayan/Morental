@@ -14,10 +14,10 @@ const FilterSidebar = ({
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedFuel, setSelectedFuel] = useState<string[]>([]);
   const [selectedCapacity, setSelectedCapacity] = useState<number[]>([]);
-  const [price, setPrice] = useState<number>(100);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [priceSortOrder, setPriceSortOrder] = useState<string>("");
+  const [priceSortOrder, setPriceSortOrder] = useState<string>("asc");
+  const [maxPrice, setMaxPrice] = useState<number>(10000);
 
   useEffect(() => {
     // Call the parent component's onFilterChange whenever filters change
@@ -27,8 +27,9 @@ const FilterSidebar = ({
       fuelType: selectedFuel,
       numberOfSeats: selectedCapacity,
       priceSort: priceSortOrder,
+      maxPrice: maxPrice,
     });
-  }, [searchQuery, selectedTypes, selectedFuel, selectedCapacity, price]);
+  }, [searchQuery, selectedTypes, selectedFuel, selectedCapacity, maxPrice]);
 
   const handleTypeChange = (type: string) => {
     setSelectedTypes((prev) =>
@@ -65,8 +66,8 @@ const FilterSidebar = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value); // Update the search query from input change
   };
-  const handlePriceSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPriceSortOrder(e.target.value); // Update the sorting order when the user changes it
+  const handlePriceChange = (value: number) => {
+    setMaxPrice(value); // Update the sorting order when the user changes it
   };
 
   return (
@@ -151,6 +152,19 @@ const FilterSidebar = ({
                 {capacity.label}{" "}
               </label>
             ))}
+          </div>
+          {/* Price Section */}
+          <div className={styles.filterSection}>
+            <h4 className={styles.sectionTitle}>Price</h4>
+            <input
+              type="range"
+              className={styles.priceRange}
+              min={0}
+              max={10000}
+              value={maxPrice}
+              onChange={(e) => handlePriceChange(Number(e.target.value))}
+            />
+            <p className={styles.priceLabel}>Max. ${maxPrice.toFixed(2)}</p>
           </div>
         </div>
       </div>

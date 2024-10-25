@@ -66,7 +66,7 @@ const PickupForm: React.FC<PickupFormProps> = ({ onDateChange }) => {
       {/* Swap Button */}
       <div className={styles.swapButtonWrapper}>
         <button className={styles.swapButton}>
-          <Image src="/icons/Swap.svg" alt="Swap Arrows" width={24} height={24} />
+          <Image src="/icons/icons8-search.svg" alt="Swap Arrows" width={24} height={24} />
         </button>
       </div>
 

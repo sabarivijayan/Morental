@@ -41,6 +41,7 @@ export const GET_AVAILABLE_CARS = gql`
     $fuelType: [String]
     $numberOfSeats: [Int]
     $priceSort: String
+    $maxPrice: Float
   ) {
     getAvailableCars(
       pickUpDate: $pickUpDate
@@ -50,6 +51,7 @@ export const GET_AVAILABLE_CARS = gql`
       fuelType: $fuelType
       numberOfSeats: $numberOfSeats
       priceSort: $priceSort
+      maxPrice: $maxPrice
     ) {
       status
       message

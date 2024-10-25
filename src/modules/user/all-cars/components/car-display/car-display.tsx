@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 const CarDisplay = ({ filters, pickUpDate, dropOffDate }: { filters: any, pickUpDate: string, dropOffDate: string }) => {
 
   // Determine which query to use based on the presence of filters or dates
-  const shouldUseAvailableCarsQuery = pickUpDate || dropOffDate || filters.searchQuery || filters.transmissionType.length || filters.fuelType.length || filters.numberOfSeats.length;
+  const shouldUseAvailableCarsQuery = pickUpDate || dropOffDate || filters.searchQuery || filters.transmissionType.length || filters.fuelType.length || filters.numberOfSeats.length || filters.maxPrice;
 
   const { loading: carLoading, error: carError, data: carData } = useQuery(
     shouldUseAvailableCarsQuery ? GET_AVAILABLE_CARS : GET_RENTABLE_CARS,
@@ -25,6 +25,7 @@ const CarDisplay = ({ filters, pickUpDate, dropOffDate }: { filters: any, pickUp
             fuelType: filters.fuelType,
             numberOfSeats: filters.numberOfSeats,
             priceSort: filters.priceSort,
+            maxPrice: filters.maxPrice
           }
         : {},
     }

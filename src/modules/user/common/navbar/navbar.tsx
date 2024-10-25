@@ -130,9 +130,7 @@ const Navbar: React.FC = () => {
             prefix={<Image src="/icons/search-normal.svg" alt="Search" width={20} height={20} />}
           />
         </Dropdown>
-        <button className={styles.filterButton}>
-          <Image src="/icons/filter.svg" alt="Filter" width={24} height={24} />
-        </button>
+        
       </div>
 
       <div className={styles.actions}>

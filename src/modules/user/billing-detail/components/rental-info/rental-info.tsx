@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./rental-info.module.css";
+import Select from "react-select";
+import { City, State } from "country-state-city";
 
 interface RentalInfoFormProps {
   setRentalDays: (days: number) => void;
@@ -11,10 +13,15 @@ const RentalInfoForm: React.FC<RentalInfoFormProps> = ({ setRentalDays, onInputC
 
   const [pickupDate, setPickupDate] = useState("");
   const [dropoffDate, setDropoffDate] = useState("");
-  const [pickupLocation, setPickupLocation] = useState("");
-  const [dropoffLocation, setDropoffLocation] = useState("");
+  const [pickupLocation, setPickupLocation] = useState(null);
+  const [dropoffLocation, setDropoffLocation] = useState(null);
   const [pickupTime, setPickupTime] = useState("");
   const [dropoffTime, setDropoffTime] = useState("");
+
+  const citiesOfKerala = City.getCitiesOfState("IN", "KL").map((city) => ({
+    value: city.name,
+    label: city.name,
+  }));
 
   useEffect(() => {
     const isFormValid =
@@ -30,8 +37,8 @@ const RentalInfoForm: React.FC<RentalInfoFormProps> = ({ setRentalDays, onInputC
       pickUpTime: pickupTime,
       dropOffDate: new Date(dropoffDate),
       dropOffTime: dropoffTime,
-      pickUpLocation: pickupLocation,
-      dropOffLocation: dropoffLocation,
+      pickUpLocation: pickupLocation?.value,
+      dropOffLocation: dropoffLocation?.value,
     });
   }, [pickupLocation, dropoffLocation, pickupDate, dropoffDate, pickupTime, dropoffTime]);
 
@@ -81,16 +88,13 @@ const RentalInfoForm: React.FC<RentalInfoFormProps> = ({ setRentalDays, onInputC
         <div className={styles.fields}>
           <div className={styles.fieldGroup}>
             <label htmlFor="pickupLocation">Locations</label>
-            <select 
-              id="pickupLocation" 
-              value={pickupLocation} 
-              onChange={(e) => setPickupLocation(e.target.value)}
-            >
-              <option value="">Select your city</option>
-              <option value="New York">New York</option>
-              <option value="Los Angeles">Los Angeles</option>
-              <option value="Chicago">Chicago</option>
-            </select>
+            <Select
+              id="pickupLocation"
+              options={citiesOfKerala}
+              value={pickupLocation}
+              onChange={(option) => setPickupLocation(option)}
+              placeholder="Select your city"
+            />
           </div>
 
           <div className={styles.fieldGroup}>
@@ -127,16 +131,13 @@ const RentalInfoForm: React.FC<RentalInfoFormProps> = ({ setRentalDays, onInputC
         <div className={styles.fields}>
           <div className={styles.fieldGroup}>
             <label htmlFor="dropoffLocation">Locations</label>
-            <select 
-              id="dropoffLocation" 
-              value={dropoffLocation} 
-              onChange={(e) => setDropoffLocation(e.target.value)}
-            >
-              <option value="">Select your city</option>
-              <option value="New York">New York</option>
-              <option value="Los Angeles">Los Angeles</option>
-              <option value="Chicago">Chicago</option>
-            </select>
+            <Select
+              id="dropoffLocation"
+              options={citiesOfKerala}
+              value={dropoffLocation}
+              onChange={(option) => setDropoffLocation(option)}
+              placeholder="Select your city"
+            />
           </div>
 
           <div className={styles.fieldGroup}>

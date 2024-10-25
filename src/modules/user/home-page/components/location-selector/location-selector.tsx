@@ -4,14 +4,15 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';  // Import react-toastify CSS
 import styles from "./location-selector.module.css";
-
+import { useRouter } from "next/navigation";
 const PickupForm: React.FC = () => {
+
+  const router = useRouter();
+
   // State for pickup and drop-off fields
-  const [pickupCity, setPickupCity] = useState("");
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   
-  const [dropOffCity, setDropOffCity] = useState("");
   const [dropOffDate, setDropOffDate] = useState("");
   const [dropOffTime, setDropOffTime] = useState("");
 
@@ -19,23 +20,10 @@ const PickupForm: React.FC = () => {
   const today = new Date().toISOString().split("T")[0];
 
   // List of cities in Kerala
-  const cities = ["Kochi", "Trivandrum", "Kozhikode", "Thrissur", "Alappuzha"];
-
+  
   // Handle Swap
-  const handleSwap = () => {
-    // Check if all fields are filled
-    if (pickupCity && pickupDate && pickupTime && dropOffCity && dropOffDate && dropOffTime) {
-      // Swap logic
-      setPickupCity(dropOffCity);
-      setPickupDate(dropOffDate);
-      setPickupTime(dropOffTime);
-
-      setDropOffCity(pickupCity);
-      setDropOffDate(pickupDate);
-      setDropOffTime(pickupTime);
-    } else {
-      toast.error("Please fill all fields before swapping.");  // Show error toast
-    }
+  const handleRedirect = () => {
+    router.push('/all-cars'); // Change '/all-cars' to your actual route
   };
 
   // Check for date/time validation between pickup and drop-off
@@ -101,8 +89,8 @@ const PickupForm: React.FC = () => {
       </div>
 
       {/* Swap Button */}
-      <button className={styles.swapButton} onClick={handleSwap}>
-        <Image src="/icons/Swap.svg" alt="Swap Arrows" width={24} height={24} />
+      <button className={styles.swapButton} onClick={handleRedirect}>
+        <Image src="/icons/icons8-search.svg" alt="Swap Arrows" width={24} height={24} />
       </button>
 
       {/* Drop-Off Section */}
