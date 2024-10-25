@@ -36,7 +36,7 @@ const CarDisplay = ({ filters, pickUpDate, dropOffDate }: { filters: any, pickUp
   const router = useRouter();
 
   if (carLoading || bookingLoading) return <Spin tip="Loading cars and bookings..." />;
-  if (carError || bookingError) return <Alert message="Error loading data" type="error" />;
+  if (carError || bookingError) return <Alert message="Error loading data. Please enter a date in the date picker." type="error" />;
 
   const rentableCars: RentableCar[] = carData?.getAvailableCars?.data || carData?.getRentableCars || [];
   const bookings = bookingData?.fetchBookings?.data || [];

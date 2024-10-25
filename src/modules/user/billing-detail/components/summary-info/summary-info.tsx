@@ -37,7 +37,7 @@ const RentalSummary: React.FC<RentalSummaryProps> = ({
         </div>
         <div className={styles.priceRow}>
           <span>Tax</span>
-          <span>$0</span>
+          <span>₹0</span>
         </div>
       </div>
       

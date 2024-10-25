@@ -37,7 +37,7 @@ const CarDisplay = () => {
         fuelCapacity={rentableCar.car.fuelType}
         transmission={rentableCar.car.transmissionType}
         capacity={rentableCar.car.numberOfSeats}
-        price={`$${rentableCar.pricePerDay}`}
+        price={`₹${rentableCar.pricePerDay}`}
         onRentNow={() => handleRentNowClick(rentableCar.id)} // Pass the car ID to the handler
       />
     </SwiperSlide>
@@ -53,7 +53,7 @@ const CarDisplay = () => {
       fuelCapacity={rentableCar.car.fuelType}
       transmission={rentableCar.car.transmissionType}
       capacity={rentableCar.car.numberOfSeats}
-      price={`$${rentableCar.pricePerDay}`}
+      price={`₹${rentableCar.pricePerDay}`}
       onRentNow={() => handleRentNowClick(rentableCar.id)} // Pass the car ID to the handler
     />
   ));

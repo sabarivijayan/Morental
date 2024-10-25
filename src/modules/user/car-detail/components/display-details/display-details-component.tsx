@@ -15,8 +15,6 @@ const CarDetailsComponent: React.FC = () => {
   const { id } = useParams(); // Extract car ID from URL params
   const router = useRouter();
 
-  // Log to ensure the ID is correctly retrieved
-  console.log(useParams());
 
   // Fetch car details using the car ID
   const { data, loading, error } = useQuery(GET_RENTABLE_CAR_WITH_ID, {
@@ -24,9 +22,6 @@ const CarDetailsComponent: React.FC = () => {
     skip: !id, // Ensure we skip the query only if id is missing
   });
 
-  // Log the data and error to check the query response
-  console.log("GraphQL data:", data);
-  console.log("GraphQL error:", error);
 
   // Initialize selected image with null or an empty string initially
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -66,7 +61,7 @@ const CarDetailsComponent: React.FC = () => {
             {/* Main Image */}
             <div className={styles.mainImage}>
               <Image
-                src={selectedImage || carData.car.primaryImageUrl}
+                src={selectedImage ?? carData.car.primaryImageUrl}
                 alt={carData.car.name}
                 width={500}
                 height={300}

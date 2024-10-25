@@ -230,7 +230,7 @@ const UserDashboard: React.FC = () => {
       title: "Total Price",
       dataIndex: "totalPrice",
       key: "totalPrice",
-      render: (price: number) => `$${price.toFixed(2)}`,
+      render: (price: number) => `₹${price.toFixed(2)}`,
     },
     {
       title: "Phone Number",
