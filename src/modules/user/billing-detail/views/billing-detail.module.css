@@ -66,6 +66,7 @@
   background-color: #2a51c7;
 }
 
+/* Medium Screens (Tablets) */
 @media (max-width: 1024px) {
   .container {
     flex-direction: column;
@@ -87,5 +88,52 @@
 
   .rightColumn {
     order: 1;
+  }
+}
+
+/* Small Screens (Mobile Landscape) */
+@media (max-width: 768px) {
+  .container {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .leftColumn {
+    max-height: none; /* Remove max height constraint for smaller screens */
+    row-gap: 24px;
+    padding: 8px;
+  }
+
+  .rightColumn {
+    padding-top: 8px;
+  }
+
+  .rentButton {
+    font-size: 14px;
+    padding: 10px 20px; /* Smaller button for smaller screens */
+  }
+}
+
+/* Extra Small Screens (Mobile Portrait) */
+@media (max-width: 480px) {
+  .container {
+    padding: 40px 16px 16px 16px;
+    gap: 16px;
+  }
+
+  .leftColumn {
+    min-width: 100%;
+    row-gap: 16px;
+    padding: 4px;
+  }
+
+  .rightColumn {
+    padding-top: 4px;
+    margin-bottom: 16px;
+  }
+
+  .rentButton {
+    font-size: 12px;
+    padding: 8px 16px;
   }
 }
