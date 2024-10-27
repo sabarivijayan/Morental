@@ -38,7 +38,7 @@ const RentalSummary: React.FC<RentalSummaryProps> = ({
       <div className={styles.pricing}>
         <div className={styles.priceRow}>
           <span>Subtotal</span> {/* Label for subtotal */}
-          <span>${carData.pricePerDay}/day</span> {/* Display daily price */}
+          <span>₹{carData.pricePerDay}/day</span> {/* Display daily price */}
         </div>
         <div className={styles.priceRow}>
           <span>Tax</span> {/* Label for tax */}
@@ -49,7 +49,7 @@ const RentalSummary: React.FC<RentalSummaryProps> = ({
       {/* Total price display */}
       <div className={styles.totalPrice}>
         <span>Total Rental Price</span> {/* Label for total price */}
-        <span className={styles.price}>${totalPrice}</span> {/* Display calculated total price */}
+        <span className={styles.price}>₹{totalPrice}</span> {/* Display calculated total price */}
       </div>
       
       <p className={styles.footerText}>

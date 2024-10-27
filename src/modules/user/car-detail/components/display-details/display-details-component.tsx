@@ -152,7 +152,7 @@ const CarDetailsComponent: React.FC = () => {
             {/* Price Section */}
             <div className={styles.carPrice}>
               <span className={styles.discountedPrice}>
-                ${carData.pricePerDay}/day
+              ₹{carData.pricePerDay}/day
               </span>
             </div>
 

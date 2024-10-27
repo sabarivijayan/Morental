@@ -82,7 +82,7 @@ const CarDisplay = ({ filters, pickUpDate, dropOffDate }: { filters: any, pickUp
         fuelCapacity={rentableCar.car.fuelType}
         transmission={rentableCar.car.transmissionType}
         capacity={rentableCar.car.numberOfSeats}
-        price={`$${rentableCar.pricePerDay}`}
+        price={`₹${rentableCar.pricePerDay}`}
         onRentNow={() => handleRentNowClick(rentableCar.id)}
       />
     </div>

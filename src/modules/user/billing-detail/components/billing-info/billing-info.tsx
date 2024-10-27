@@ -143,7 +143,7 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({ onInputChange, prefil
 
       <div className={styles.buttonContainer}>
         <Button className={styles.editSaveButton} type="primary" onClick={toggleEdit}>
-          {isEditing ? "Save Changes" : "Edit Info"} // Button text changes based on editing state
+          {isEditing ? "Save Changes" : "Edit Info"} {/*Button text changes based on editing state*/}
         </Button>
       </div>
     </div>
