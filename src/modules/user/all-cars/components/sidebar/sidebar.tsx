@@ -9,7 +9,7 @@ const { Search } = Input;
 const FilterSidebar = ({
   onFilterChange,
 }: {
-  onFilterChange: (filters: any) => void;
+  onFilterChange: (filters: any) => void; // Callback for filter changes
 }) => {
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedFuel, setSelectedFuel] = useState<string[]>([]);
@@ -66,8 +66,9 @@ const FilterSidebar = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value); // Update the search query from input change
   };
+
   const handlePriceChange = (value: number) => {
-    setMaxPrice(value); // Update the sorting order when the user changes it
+    setMaxPrice(value); // Update the maximum price filter
   };
 
   return (
@@ -82,7 +83,7 @@ const FilterSidebar = ({
         className={`${styles.sidebar} ${
           sidebarOpen ? styles.active : styles.hidden
         }`}
-        onClick={closeSidebar} // Allow closing the sidebar when clicking outside the close button.
+        onClick={closeSidebar} // Allow closing the sidebar when clicking outside the close button
       >
         {/* Close Button */}
         <button className={styles.closeButton} onClick={closeSidebar}>
@@ -113,7 +114,7 @@ const FilterSidebar = ({
                 <input
                   type="checkbox"
                   checked={selectedTypes.includes(type)}
-                  onChange={() => handleTypeChange(type)}
+                  onChange={() => handleTypeChange(type)} // Handle checkbox change
                 />
                 {type}{" "}
               </label>
@@ -127,7 +128,7 @@ const FilterSidebar = ({
                 <input
                   type="checkbox"
                   checked={selectedFuel.includes(type)}
-                  onChange={() => handleFuelChange(type)}
+                  onChange={() => handleFuelChange(type)} // Handle checkbox change
                 />
                 {type}{" "}
               </label>
@@ -137,7 +138,7 @@ const FilterSidebar = ({
           {/* Capacity Section */}
           <div className={styles.filterSection}>
             <h4 className={styles.sectionTitle}>Capacity</h4>
-            {[
+            {[ 
               { label: "2 Person", value: 2 },
               { label: "4 Person", value: 4 },
               { label: "5 Person", value: 5 },
@@ -147,7 +148,7 @@ const FilterSidebar = ({
                 <input
                   type="checkbox"
                   checked={selectedCapacity.includes(capacity.value)}
-                  onChange={() => handleCapacityChange(capacity.value)}
+                  onChange={() => handleCapacityChange(capacity.value)} // Handle checkbox change
                 />
                 {capacity.label}{" "}
               </label>
@@ -162,7 +163,7 @@ const FilterSidebar = ({
               min={0}
               max={10000}
               value={maxPrice}
-              onChange={(e) => handlePriceChange(Number(e.target.value))}
+              onChange={(e) => handlePriceChange(Number(e.target.value))} // Update max price on change
             />
             <p className={styles.priceLabel}>Max. ${maxPrice.toFixed(2)}</p>
           </div>

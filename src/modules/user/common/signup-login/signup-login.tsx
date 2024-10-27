@@ -13,72 +13,78 @@ const { Step } = Steps;
 
 const SignupForm: React.FC = () => {
   const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  const [formData, setFormData] = useState<FormData>({ phoneNumber: "", confirmPassword: "" });
-  const [isLoginForm, setIsLoginForm] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0); // Tracks the current step in the signup process
+  const [passwordVisible, setPasswordVisible] = useState(false); // Toggles visibility of the password input
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // Toggles visibility of the confirm password input
+  const [formData, setFormData] = useState<FormData>({ phoneNumber: "", confirmPassword: "" }); // Holds form data
+  const [isLoginForm, setIsLoginForm] = useState(false); // Switches between signup and login forms
 
+  // GraphQL mutations for authentication
   const [registerUser] = useMutation(REGISTER_USER);
   const [sendOTP] = useMutation(SEND_OTP);
   const [verifyOTP] = useMutation(VERIFY_OTP);
   const [loginUser] = useMutation(LOGIN_USER);
 
-  const [otpId, setOtpId] = useState(""); // For storing OTP ID
-  const [timer, setTimer] = useState(60); // OTP resend timer
+  const [otpId, setOtpId] = useState(""); // Stores OTP ID for verification
+  const [timer, setTimer] = useState(60); // Timer for OTP resend functionality
 
   useEffect(() => {
+    // Countdown timer for OTP expiration
     if (currentStep === 1 && timer > 0) {
       const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
-      return () => clearInterval(interval);
+      return () => clearInterval(interval); // Clear interval on cleanup
     }
   }, [timer, currentStep]);
 
   useEffect(() => {
-    // Store the last visited page before switching to the login form
+    // Store the last visited page in cookies when switching to login form
     if (isLoginForm) {
       const lastVisitedPage = window.location.pathname;
       Cookies.set("lastVisitedPage", lastVisitedPage);
     }
   }, [isLoginForm]);
 
+  // Sends OTP to the provided phone number
   const handleSendOTP = async () => {
     try {
       if (!formData.phoneNumber) {
-        message.error("Phone number is required.");
+        message.error("Phone number is required."); // Validation error
         return;
       }
 
+      // Send OTP mutation
       const { data } = await sendOTP({ variables: { phoneNumber: formData.phoneNumber } });
       if (data.sendOTP.status === "success") {
-        message.success(data.sendOTP.message);
-        setOtpId(data.sendOTP.otpId);
-        setCurrentStep(1);
-        setTimer(60);
+        message.success(data.sendOTP.message); // Successful OTP sent
+        setOtpId(data.sendOTP.otpId); // Store OTP ID
+        setCurrentStep(1); // Move to OTP verification step
+        setTimer(60); // Reset timer
       } else {
-        message.error(data.sendOTP.message);
+        message.error(data.sendOTP.message); // Handle error response
       }
     } catch (error) {
-      message.error("Failed to send OTP. Please try again.");
+      message.error("Failed to send OTP. Please try again."); // General error handling
     }
   };
 
+  // Verifies the OTP entered by the user
   const handleOTPVerification = async (values: { otp: string }) => {
     try {
       const { data } = await verifyOTP({
         variables: { phoneNumber: formData.phoneNumber, otp: values.otp },
       });
       if (data.verifyOTP.status === "success") {
-        message.success(data.verifyOTP.message);
-        setCurrentStep(2);
+        message.success(data.verifyOTP.message); // Successful verification
+        setCurrentStep(2); // Move to address info step
       } else {
-        message.error(data.verifyOTP.message);
+        message.error(data.verifyOTP.message); // Handle error response
       }
     } catch (error) {
-      message.error("Failed to verify OTP. Please try again.");
+      message.error("Failed to verify OTP. Please try again."); // General error handling
     }
   };
 
+  // Handles user registration after OTP verification
   const handleRegistration = async (values: Partial<FormData>) => {
     try {
       const { data } = await registerUser({
@@ -90,26 +96,28 @@ const SignupForm: React.FC = () => {
         },
       });
       if (data.registerUser.status === "success") {
-        message.success(data.registerUser.message);
-        setCurrentStep(0);
-        setIsLoginForm(true);
+        message.success(data.registerUser.message); // Successful registration
+        setCurrentStep(0); // Reset to first step
+        setIsLoginForm(true); // Switch to login form
       } else {
-        message.error(data.registerUser.message);
+        message.error(data.registerUser.message); // Handle error response
       }
     } catch (error) {
-      message.error("Registration failed. Please try again.");
+      message.error("Registration failed. Please try again."); // General error handling
     }
   };
 
+  // Handles the form submission for basic details
   const onFinishBasicDetails = (values: Partial<FormData>) => {
-    setFormData({ ...formData, ...values });
+    setFormData({ ...formData, ...values }); // Update form data state
     if (values.phoneNumber) {
-      handleSendOTP();
+      handleSendOTP(); // Trigger OTP sending
     } else {
-      message.error("Phone number is required to send OTP.");
+      message.error("Phone number is required to send OTP."); // Validation error
     }
   };
 
+  // Handles user login
   const handleLogin = async (values: { email: string; password: string }) => {
     try {
       const { data } = await loginUser({
@@ -117,33 +125,30 @@ const SignupForm: React.FC = () => {
       });
   
       if (data.userLogin.status === "success") {
-        message.success("Login successful!");
-  
+        message.success("Login successful!"); // Successful login
+
         // Store token in cookies
         Cookies.set("token", data.userLogin.token, {
-          expires: 1 / 24, // Token expires in 7 days
-          secure: true, // Use true if your site is served over HTTPS
+          expires: 1 / 24, // Token expires in 1 hour
+          secure: true, // Use secure flag for HTTPS
           sameSite: "Strict", // Helps prevent CSRF attacks
         });
   
-        // Use router.back() to navigate to the previous page
+        // Navigate to the previous page
         router.back();
       } else {
-        message.error(data.userLogin.message);
+        message.error(data.userLogin.message); // Handle error response
       }
     } catch (error) {
-      message.error("Login failed. Please try again.");
+      message.error("Login failed. Please try again."); // General error handling
     }
   };
-  
-  
-  
 
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <h2 className={styles.formTitle}>
-          {isLoginForm ? "Login" : "Registration – Sign up"}
+          {isLoginForm ? "Login" : "Registration – Sign up"} {/* Display form title based on state */}
         </h2>
 
         {!isLoginForm ? (
@@ -165,40 +170,35 @@ const SignupForm: React.FC = () => {
                 <Form.Item
                   label="First Name"
                   name="firstName"
-                  rules={[{ required: true, message: "Please enter your first name!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter your first name!" }]}>
                   <Input placeholder="First Name" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Last Name"
                   name="lastName"
-                  rules={[{ required: true, message: "Please enter your last name!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter your last name!" }]}>
                   <Input placeholder="Last Name" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Email"
                   name="email"
-                  rules={[{ required: true, message: "Please enter your email!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter your email!" }]}>
                   <Input placeholder="Email" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Phone"
                   name="phoneNumber"
-                  rules={[{ required: true, message: "Please enter your phone number!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter your phone number!" }]}>
                   <Input placeholder="Phone" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Password"
                   name="password"
-                  rules={[{ required: true, message: "Please enter your password!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter your password!" }]}>
                   <Input.Password
                     placeholder="Password"
                     visibilityToggle={passwordVisible}
@@ -225,13 +225,12 @@ const SignupForm: React.FC = () => {
                     ({ getFieldValue }) => ({
                       validator(_, value) {
                         if (!value || getFieldValue("password") === value) {
-                          return Promise.resolve();
+                          return Promise.resolve(); // Passwords match
                         }
-                        return Promise.reject("Passwords do not match!");
+                        return Promise.reject("Passwords do not match!"); // Passwords do not match
                       },
                     }),
-                  ]}
-                >
+                  ]}>
                   <Input.Password
                     placeholder="Confirm Password"
                     visibilityToggle={confirmPasswordVisible}
@@ -265,8 +264,7 @@ const SignupForm: React.FC = () => {
                 <Form.Item
                   label="OTP"
                   name="otp"
-                  rules={[{ required: true, message: "Please enter the OTP sent to your phone!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter the OTP sent to your phone!" }]}>
                   <Input placeholder="Enter OTP" className={styles.input} />
                 </Form.Item>
 
@@ -282,32 +280,28 @@ const SignupForm: React.FC = () => {
                 <Form.Item
                   label="City"
                   name="city"
-                  rules={[{ required: true, message: "Please enter your city!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter your city!" }]}>
                   <Input placeholder="City" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="State"
                   name="state"
-                  rules={[{ required: true, message: "Please enter your state!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter your state!" }]}>
                   <Input placeholder="State" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Country"
                   name="country"
-                  rules={[{ required: true, message: "Please enter your country!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter your country!" }]}>
                   <Input placeholder="Country" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Pincode"
                   name="pincode"
-                  rules={[{ required: true, message: "Please enter your pincode!" }]}
-                >
+                  rules={[{ required: true, message: "Please enter your pincode!" }]}>
                   <Input placeholder="Pincode" className={styles.input} />
                 </Form.Item>
 
@@ -317,6 +311,7 @@ const SignupForm: React.FC = () => {
               </Form>
             )}
 
+            {/* Link to switch to the login form */}
             <p className={styles.toggleText}>
               Already registered?{" "}
               <span className={styles.toggleLink} onClick={() => setIsLoginForm(true)}>
@@ -334,16 +329,14 @@ const SignupForm: React.FC = () => {
             <Form.Item
               label="Email"
               name="email"
-              rules={[{ required: true, message: "Please enter your email!" }]}
-            >
+              rules={[{ required: true, message: "Please enter your email!" }]}>
               <Input placeholder="Email" className={styles.input} />
             </Form.Item>
 
             <Form.Item
               label="Password"
               name="password"
-              rules={[{ required: true, message: "Please enter your password!" }]}
-            >
+              rules={[{ required: true, message: "Please enter your password!" }]}>
               <Input.Password
                 placeholder="Password"
                 visibilityToggle={passwordVisible}
@@ -364,6 +357,7 @@ const SignupForm: React.FC = () => {
               Login
             </Button>
 
+            {/* Link to switch to the signup form */}
             <p className={styles.toggleText}>
               Don't have an account?{" "}
               <span className={styles.toggleLink} onClick={() => setIsLoginForm(false)}>

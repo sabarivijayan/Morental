@@ -13,7 +13,7 @@ interface UserData {
 }
 
 interface BillingInfoFormProps {
-  onInputChange: (field: string, isValid: boolean, data?: any) => void;
+  onInputChange: (field: string, isValid: boolean, data?: any) => void; // Callback for parent component
   prefillData?: {
     firstName: string;
     lastName: string;
@@ -32,18 +32,21 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({ onInputChange, prefil
   });
 
   useEffect(() => {
+    // Notify the parent component of the current billing info's validity and content
     const { firstName, lastName, phoneNumber, address } = userData;
     onInputChange("billingInfo", !!firstName && !!lastName && !!phoneNumber && !!address, userData);
   }, [userData, onInputChange]);
 
   const [isEditing, setIsEditing] = useState(false);
-  const token = Cookies.get("token");
+  const token = Cookies.get("token"); // Get authentication token from cookies
 
+  // Fetch user data only if the token exists
   const { data, loading, error } = useQuery(FETCH_USER, {
-    skip: !token,
+    skip: !token, // Skip query if token is not present
   });
 
   useEffect(() => {
+    // Set user data from prefillData or fetched user data
     if (prefillData) {
       setUserData({
         firstName: prefillData.firstName || "",
@@ -59,6 +62,7 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({ onInputChange, prefil
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
+    // Update user data based on input field changes
     setUserData((prevData) => ({
       ...prevData,
       [id]: value,
@@ -66,18 +70,20 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({ onInputChange, prefil
   };
 
   const toggleEdit = () => {
+    // Toggle between editing and viewing modes
     setIsEditing((prev) => !prev);
   };
 
   const handleSave = () => {
+    // Show success message on save
     message.success("Changes saved successfully!");
-    setIsEditing(false);
+    setIsEditing(false); // Exit editing mode after saving
   };
 
-  if (loading) return <p>Loading billing info...</p>;
+  if (loading) return <p>Loading billing info...</p>; // Loading state
   if (error) {
     console.error("Error loading billing info:", error);
-    return <p>Error loading billing info: {error.message}</p>;
+    return <p>Error loading billing info: {error.message}</p>; // Error handling
   }
 
   return (
@@ -98,7 +104,7 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({ onInputChange, prefil
             placeholder="First name"
             value={userData.firstName}
             onChange={handleInputChange}
-            readOnly={!isEditing}
+            readOnly={!isEditing} // Input is editable only in editing mode
           />
         </div>
         <div className={styles.inputGroup}>
@@ -129,7 +135,7 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({ onInputChange, prefil
             type="text"
             id="address"
             placeholder="Address"
-            value={userData.address} // Address remains editable
+            value={userData.address} // Address remains editable regardless of editing mode
             onChange={handleInputChange}
           />
         </div>
@@ -137,7 +143,7 @@ const BillingInfoForm: React.FC<BillingInfoFormProps> = ({ onInputChange, prefil
 
       <div className={styles.buttonContainer}>
         <Button className={styles.editSaveButton} type="primary" onClick={toggleEdit}>
-          {isEditing ? "Save Changes" : "Edit Info"}
+          {isEditing ? "Save Changes" : "Edit Info"} // Button text changes based on editing state
         </Button>
       </div>
     </div>
