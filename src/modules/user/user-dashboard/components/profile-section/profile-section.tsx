@@ -18,7 +18,7 @@ import { FETCH_BOOKINGS } from "@/graphql/queries/booking-cars";
 import { FETCH_USER } from "@/graphql/queries/auth";
 import { UPDATE_PASSWORD, UPDATE_PROFILE_IMAGE, UPDATE_USER_PROFILE } from "@/graphql/mutations/auth";
 import styles from "./profile-section.module.css";
-
+import Cookies from 'js-cookie'
 // Interface for booking data structure
 interface BookingData {
   id: string;
@@ -69,12 +69,12 @@ const UserDashboard: React.FC = () => {
 
   const [profileForm] = Form.useForm(); // Form instance for profile editing
   const [passwordForm] = Form.useForm(); // Form instance for password editing
-
+  const token = Cookies.get("token")
   // Fetch bookings data with authorization header
   const { data: bookingData, loading: bookingLoading } = useQuery(FETCH_BOOKINGS, {
     context: {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`, // Get token from local storage
+        Authorization: `Bearer ${token}`,
       },
     },
   });
