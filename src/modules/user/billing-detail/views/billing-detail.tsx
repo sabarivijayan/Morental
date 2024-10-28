@@ -195,10 +195,16 @@ const BillingDetailPage = () => {
               const successAudio = new Audio("/success.mp3");
               successAudio.play();
               confetti({
-                particleCount: 200,
-                spread: 70,
-                origin: { y: 0.6 },
+                particleCount: 500,         // Increases the number of confetti particles
+                spread: 120,                // Widens the spread of the particles
+                startVelocity: 45,          // Higher velocity for more energy
+                decay: 0.9,                 // Slows the rate at which confetti fades
+                scalar: 1.2,                // Scales up the confetti size
+                origin: { x: 0.5, y: 0.6 }, // Start position of the confetti
+                ticks: 200,                 // Keeps confetti on the screen longer
+                colors: ["#BB0000", "#FFFFFF", "#0000FF"], // Customize colors for variation
               });
+              
   
               // Redirect to user dashboard
               router.push("/user-dashboard");
