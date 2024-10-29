@@ -183,6 +183,10 @@ const SignupForm: React.FC = () => {
                       required: true,
                       message: "Please enter your first name!",
                     },
+                    {
+                      pattern: /^[A-Za-z]+$/,
+                      message: "First name can only contain letters.",
+                    },
                   ]}
                 >
                   <Input placeholder="First Name" className={styles.input} />
@@ -193,6 +197,10 @@ const SignupForm: React.FC = () => {
                   name="lastName"
                   rules={[
                     { required: true, message: "Please enter your last name!" },
+                    {
+                      pattern: /^[A-Za-z]+$/,
+                      message: "Last name can only contain letters.",
+                    },
                   ]}
                 >
                   <Input placeholder="Last Name" className={styles.input} />
@@ -203,6 +211,10 @@ const SignupForm: React.FC = () => {
                   name="email"
                   rules={[
                     { required: true, message: "Please enter your email!" },
+                    {
+                      type: "email",
+                      message: "Please enter a valid email address!",
+                    },
                   ]}
                 >
                   <Input placeholder="Email" className={styles.input} />
@@ -226,6 +238,15 @@ const SignupForm: React.FC = () => {
                   name="password"
                   rules={[
                     { required: true, message: "Please enter your password!" },
+                    {
+                      min: 8,
+                      message: "Password must be at least 8 characters long.",
+                    },
+                    {
+                      pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                      message:
+                        "Password must contain at least one letter and one number.",
+                    },
                   ]}
                 >
                   <Input.Password
@@ -248,9 +269,11 @@ const SignupForm: React.FC = () => {
                     ({ getFieldValue }) => ({
                       validator(_, value) {
                         if (!value || getFieldValue("password") === value) {
-                          return Promise.resolve(); // Passwords match
+                          return Promise.resolve();
                         }
-                        return Promise.reject("Passwords do not match!"); // Passwords do not match
+                        return Promise.reject(
+                          new Error("Passwords do not match!")
+                        );
                       },
                     }),
                   ]}
