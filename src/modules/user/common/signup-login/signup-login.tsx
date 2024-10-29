@@ -1,9 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Steps, message } from "antd";
-import Image from "next/image";
 import { useMutation } from "@apollo/client";
-import { REGISTER_USER, VERIFY_OTP, SEND_OTP, LOGIN_USER } from "@/graphql/mutations/auth";
+import {
+  REGISTER_USER,
+  VERIFY_OTP,
+  SEND_OTP,
+  LOGIN_USER,
+} from "@/graphql/mutations/auth";
 import { FormData } from "@/interfaces/auth";
 import { useRouter } from "next/navigation";
 import styles from "./signup-login.module.css";
@@ -14,9 +18,10 @@ const { Step } = Steps;
 const SignupForm: React.FC = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0); // Tracks the current step in the signup process
-  const [passwordVisible, setPasswordVisible] = useState(false); // Toggles visibility of the password input
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // Toggles visibility of the confirm password input
-  const [formData, setFormData] = useState<FormData>({ phoneNumber: "", confirmPassword: "" }); // Holds form data
+  const [formData, setFormData] = useState<FormData>({
+    phoneNumber: "",
+    confirmPassword: "",
+  }); // Holds form data
   const [isLoginForm, setIsLoginForm] = useState(false); // Switches between signup and login forms
 
   // GraphQL mutations for authentication
@@ -53,7 +58,9 @@ const SignupForm: React.FC = () => {
       }
 
       // Send OTP mutation
-      const { data } = await sendOTP({ variables: { phoneNumber: formData.phoneNumber } });
+      const { data } = await sendOTP({
+        variables: { phoneNumber: formData.phoneNumber },
+      });
       if (data.sendOTP.status === "success") {
         message.success(data.sendOTP.message); // Successful OTP sent
         setOtpId(data.sendOTP.otpId); // Store OTP ID
@@ -123,7 +130,7 @@ const SignupForm: React.FC = () => {
       const { data } = await loginUser({
         variables: { email: values.email, password: values.password },
       });
-  
+
       if (data.userLogin.status === "success") {
         message.success("Login successful!"); // Successful login
 
@@ -133,7 +140,7 @@ const SignupForm: React.FC = () => {
           secure: true, // Use secure flag for HTTPS
           sameSite: "Strict", // Helps prevent CSRF attacks
         });
-  
+
         // Navigate to the previous page
         router.back();
       } else {
@@ -148,7 +155,8 @@ const SignupForm: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <h2 className={styles.formTitle}>
-          {isLoginForm ? "Login" : "Registration – Sign up"} {/* Display form title based on state */}
+          {isLoginForm ? "Login" : "Registration – Sign up"}{" "}
+          {/* Display form title based on state */}
         </h2>
 
         {!isLoginForm ? (
@@ -170,48 +178,60 @@ const SignupForm: React.FC = () => {
                 <Form.Item
                   label="First Name"
                   name="firstName"
-                  rules={[{ required: true, message: "Please enter your first name!" }]}>
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your first name!",
+                    },
+                  ]}
+                >
                   <Input placeholder="First Name" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Last Name"
                   name="lastName"
-                  rules={[{ required: true, message: "Please enter your last name!" }]}>
+                  rules={[
+                    { required: true, message: "Please enter your last name!" },
+                  ]}
+                >
                   <Input placeholder="Last Name" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Email"
                   name="email"
-                  rules={[{ required: true, message: "Please enter your email!" }]}>
+                  rules={[
+                    { required: true, message: "Please enter your email!" },
+                  ]}
+                >
                   <Input placeholder="Email" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Phone"
                   name="phoneNumber"
-                  rules={[{ required: true, message: "Please enter your phone number!" }]}>
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your phone number!",
+                    },
+                  ]}
+                >
                   <Input placeholder="Phone" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Password"
                   name="password"
-                  rules={[{ required: true, message: "Please enter your password!" }]}>
+                  rules={[
+                    { required: true, message: "Please enter your password!" },
+                  ]}
+                >
                   <Input.Password
                     placeholder="Password"
-                    visibilityToggle={passwordVisible}
+                    visibilityToggle // Enables the default Ant Design eye toggle
                     className={styles.input}
-                    iconRender={(visible) => (
-                      <Image
-                        src={visible ? "/icons/eye.svg" : "/icons/eye-slash.svg"}
-                        alt="Toggle Password Visibility"
-                        width={20}
-                        height={20}
-                        onClick={() => setPasswordVisible(!passwordVisible)}
-                      />
-                    )}
                   />
                 </Form.Item>
 
@@ -221,7 +241,10 @@ const SignupForm: React.FC = () => {
                   dependencies={["password"]}
                   hasFeedback
                   rules={[
-                    { required: true, message: "Please confirm your password!" },
+                    {
+                      required: true,
+                      message: "Please confirm your password!",
+                    },
                     ({ getFieldValue }) => ({
                       validator(_, value) {
                         if (!value || getFieldValue("password") === value) {
@@ -230,24 +253,20 @@ const SignupForm: React.FC = () => {
                         return Promise.reject("Passwords do not match!"); // Passwords do not match
                       },
                     }),
-                  ]}>
+                  ]}
+                >
                   <Input.Password
                     placeholder="Confirm Password"
-                    visibilityToggle={confirmPasswordVisible}
+                    visibilityToggle // Enables the default Ant Design eye toggle
                     className={styles.input}
-                    iconRender={(visible) => (
-                      <Image
-                        src={visible ? "/icons/eye.svg" : "/icons/eye-slash.svg"}
-                        alt="Toggle Password Visibility"
-                        width={20}
-                        height={20}
-                        onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-                      />
-                    )}
                   />
                 </Form.Item>
 
-                <Button type="primary" htmlType="submit" className={styles.submitButton}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className={styles.submitButton}
+                >
                   Verify Phone Number
                 </Button>
               </Form>
@@ -264,11 +283,21 @@ const SignupForm: React.FC = () => {
                 <Form.Item
                   label="OTP"
                   name="otp"
-                  rules={[{ required: true, message: "Please enter the OTP sent to your phone!" }]}>
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter the OTP sent to your phone!",
+                    },
+                  ]}
+                >
                   <Input placeholder="Enter OTP" className={styles.input} />
                 </Form.Item>
 
-                <Button type="primary" htmlType="submit" className={styles.submitButton}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className={styles.submitButton}
+                >
                   Verify OTP
                 </Button>
               </Form>
@@ -276,36 +305,57 @@ const SignupForm: React.FC = () => {
 
             {/* Step 3: Address Information */}
             {currentStep === 2 && (
-              <Form name="addressInfo" layout="vertical" onFinish={handleRegistration} className={styles.form}>
+              <Form
+                name="addressInfo"
+                layout="vertical"
+                onFinish={handleRegistration}
+                className={styles.form}
+              >
                 <Form.Item
                   label="City"
                   name="city"
-                  rules={[{ required: true, message: "Please enter your city!" }]}>
+                  rules={[
+                    { required: true, message: "Please enter your city!" },
+                  ]}
+                >
                   <Input placeholder="City" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="State"
                   name="state"
-                  rules={[{ required: true, message: "Please enter your state!" }]}>
+                  rules={[
+                    { required: true, message: "Please enter your state!" },
+                  ]}
+                >
                   <Input placeholder="State" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Country"
                   name="country"
-                  rules={[{ required: true, message: "Please enter your country!" }]}>
+                  rules={[
+                    { required: true, message: "Please enter your country!" },
+                  ]}
+                >
                   <Input placeholder="Country" className={styles.input} />
                 </Form.Item>
 
                 <Form.Item
                   label="Pincode"
                   name="pincode"
-                  rules={[{ required: true, message: "Please enter your pincode!" }]}>
+                  rules={[
+                    { required: true, message: "Please enter your pincode!" },
+                  ]}
+                >
                   <Input placeholder="Pincode" className={styles.input} />
                 </Form.Item>
 
-                <Button type="primary" htmlType="submit" className={styles.submitButton}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className={styles.submitButton}
+                >
                   Register Now
                 </Button>
               </Form>
@@ -314,7 +364,10 @@ const SignupForm: React.FC = () => {
             {/* Link to switch to the login form */}
             <p className={styles.toggleText}>
               Already registered?{" "}
-              <span className={styles.toggleLink} onClick={() => setIsLoginForm(true)}>
+              <span
+                className={styles.toggleLink}
+                onClick={() => setIsLoginForm(true)}
+              >
                 Log in here
               </span>
             </p>
@@ -329,38 +382,40 @@ const SignupForm: React.FC = () => {
             <Form.Item
               label="Email"
               name="email"
-              rules={[{ required: true, message: "Please enter your email!" }]}>
+              rules={[{ required: true, message: "Please enter your email!" }]}
+            >
               <Input placeholder="Email" className={styles.input} />
             </Form.Item>
 
             <Form.Item
               label="Password"
               name="password"
-              rules={[{ required: true, message: "Please enter your password!" }]}>
+              rules={[
+                { required: true, message: "Please enter your password!" },
+              ]}
+            >
               <Input.Password
                 placeholder="Password"
-                visibilityToggle={passwordVisible}
+                visibilityToggle // Enables the default Ant Design eye toggle
                 className={styles.input}
-                iconRender={(visible) => (
-                  <Image
-                    src={visible ? "/icons/eye.svg" : "/icons/eye-slash.svg"}
-                    alt="Toggle Password Visibility"
-                    width={20}
-                    height={20}
-                    onClick={() => setPasswordVisible(!passwordVisible)}
-                  />
-                )}
               />
             </Form.Item>
 
-            <Button type="primary" htmlType="submit" className={styles.submitButton}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.submitButton}
+            >
               Login
             </Button>
 
             {/* Link to switch to the signup form */}
             <p className={styles.toggleText}>
               Don't have an account?{" "}
-              <span className={styles.toggleLink} onClick={() => setIsLoginForm(false)}>
+              <span
+                className={styles.toggleLink}
+                onClick={() => setIsLoginForm(false)}
+              >
                 Sign up here
               </span>
             </p>
