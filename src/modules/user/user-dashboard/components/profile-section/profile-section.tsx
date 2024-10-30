@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import {
   Tabs,
@@ -16,9 +16,13 @@ import {
 import { UploadOutlined } from "@ant-design/icons";
 import { FETCH_BOOKINGS } from "@/graphql/queries/booking-cars";
 import { FETCH_USER } from "@/graphql/queries/auth";
-import { UPDATE_PASSWORD, UPDATE_PROFILE_IMAGE, UPDATE_USER_PROFILE } from "@/graphql/mutations/auth";
+import {
+  UPDATE_PASSWORD,
+  UPDATE_PROFILE_IMAGE,
+  UPDATE_USER_PROFILE,
+} from "@/graphql/mutations/auth";
 import styles from "./profile-section.module.css";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 // Interface for booking data structure
 interface BookingData {
   id: string;
@@ -63,28 +67,48 @@ interface UserInfo {
 }
 
 const UserDashboard: React.FC = () => {
-  const [selectedBookings, setSelectedBookings] = useState<string[]>([]); // State for tracking selected bookings
-  const [isEditing, setIsEditing] = useState(false); // State for tracking edit mode
-  const [passwordModalVisible, setPasswordModalVisible] = useState(false); // State for tracking password modal visibility
+  const [selectedBookings, setSelectedBookings] = useState<string[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [passwordModalVisible, setPasswordModalVisible] = useState(false);
 
-  const [profileForm] = Form.useForm(); // Form instance for profile editing
-  const [passwordForm] = Form.useForm(); // Form instance for password editing
-  const token = Cookies.get("token")
-  // Fetch bookings data with authorization header
-  const { data: bookingData, loading: bookingLoading } = useQuery(FETCH_BOOKINGS, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  const [profileForm] = Form.useForm();
+  const [passwordForm] = Form.useForm();
+  const token = Cookies.get("token");
+
+  const { data: bookingData, loading: bookingLoading } = useQuery(
+    FETCH_BOOKINGS,
+    {
+      context: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    },
-  });
+    }
+  );
 
-  // Fetch user data
   const {
     data: userData,
     loading: userLoading,
-    refetch: refetchUser, // Function to refetch user data
+    refetch: refetchUser,
   } = useQuery(FETCH_USER);
+
+
+  // Populate form fields when userData is loaded
+  useEffect(() => {
+    if (!userLoading && userData?.fetchUser?.data) {
+      const user = userData.fetchUser.data;
+      profileForm.setFieldsValue({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        city: user.city,
+        state: user.state,
+        country: user.country,
+        pincode: user.pincode,
+      });
+    }
+  }, [userData, profileForm]);
 
   // Define mutations for updating user data
   const [updateProfileImage] = useMutation(UPDATE_PROFILE_IMAGE);
@@ -112,7 +136,9 @@ const UserDashboard: React.FC = () => {
         setPasswordModalVisible(false); // Close the modal
         passwordForm.resetFields(); // Reset the form fields
       } else {
-        message.error(response.data?.updatePassword?.message || "Failed to update password");
+        message.error(
+          response.data?.updatePassword?.message || "Failed to update password"
+        );
       }
     } catch (error: any) {
       message.error(error.message || "Error updating password");
@@ -144,7 +170,10 @@ const UserDashboard: React.FC = () => {
         setIsEditing(false); // Exit edit mode
         refetchUser(); // Refetch user data
       } else {
-        message.error(response.data?.updateUserProfile?.message || "Failed to update profile");
+        message.error(
+          response.data?.updateUserProfile?.message ||
+            "Failed to update profile"
+        );
       }
     } catch (error: any) {
       message.error(error.message || "Error updating profile");
@@ -166,7 +195,10 @@ const UserDashboard: React.FC = () => {
         message.success("Profile image updated successfully!");
         refetchUser(); // Refetch user data
       } else {
-        message.error(response.data?.updateProfileImage?.message || "Failed to update profile image");
+        message.error(
+          response.data?.updateProfileImage?.message ||
+            "Failed to update profile image"
+        );
       }
     } catch (error: any) {
       message.error(error.message || "Error uploading profile image");
@@ -177,6 +209,7 @@ const UserDashboard: React.FC = () => {
   const handleEditProfile = () => {
     setIsEditing(true); // Enter edit mode
     const user = userData?.fetchUser?.data; // Get user data
+
     if (user) {
       // Set form fields with user data
       profileForm.setFieldsValue({
@@ -194,10 +227,11 @@ const UserDashboard: React.FC = () => {
 
   // Handle booking selection in the table
   const handleBookingSelection = (bookingId: string, checked: boolean) => {
-    setSelectedBookings((prevSelected) =>
-      checked
-        ? [...prevSelected, bookingId] // Add booking ID if checked
-        : prevSelected.filter((id) => id !== bookingId) // Remove booking ID if unchecked
+    setSelectedBookings(
+      (prevSelected) =>
+        checked
+          ? [...prevSelected, bookingId] // Add booking ID if checked
+          : prevSelected.filter((id) => id !== bookingId) // Remove booking ID if unchecked
     );
   };
 
@@ -214,8 +248,19 @@ const UserDashboard: React.FC = () => {
         const car = record.rentable?.car;
         return car ? (
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Avatar src={car.primaryImageUrl} size={64} /> {/* Display car image */}
-            <span style={{ marginLeft: "8px", whiteSpace: "nowrap", textOverflow:"ellipsis", overflow: "hidden" }}>{car.name}</span> {/* Display car name */}
+            <Avatar src={car.primaryImageUrl} size={64} />{" "}
+            {/* Display car image */}
+            <span
+              style={{
+                marginLeft: "8px",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+              }}
+            >
+              {car.name}
+            </span>{" "}
+            {/* Display car name */}
           </div>
         ) : (
           <span>No car data</span>
@@ -239,7 +284,8 @@ const UserDashboard: React.FC = () => {
       key: "location",
       render: (_: any, record: BookingData) => (
         <>
-          {record.pickUpLocation} to {record.dropOffLocation} {/* Show pick-up and drop-off locations */}
+          {record.pickUpLocation} to {record.dropOffLocation}{" "}
+          {/* Show pick-up and drop-off locations */}
         </>
       ),
     },
@@ -279,7 +325,8 @@ const UserDashboard: React.FC = () => {
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.avatarContainer}>
-        <Avatar size={128} src={user?.profileImage} /> {/* Display user avatar */}
+        <Avatar size={128} src={user?.profileImage} />{" "}
+        {/* Display user avatar */}
       </div>
       <Upload
         beforeUpload={(file) => {
@@ -301,44 +348,51 @@ const UserDashboard: React.FC = () => {
             className={styles.formContainer}
           >
             <Form.Item label="First Name" name="firstName">
-              <Input disabled={!isEditing} /> {/* Input field for first name */}
+              <Input disabled={!isEditing} />
             </Form.Item>
             <Form.Item label="Last Name" name="lastName">
-              <Input disabled={!isEditing} /> {/* Input field for last name */}
+              <Input disabled={!isEditing} />
             </Form.Item>
             <Form.Item label="Email" name="email">
-              <Input disabled={!isEditing} /> {/* Input field for email */}
+              <Input disabled={!isEditing} />
             </Form.Item>
             <Form.Item label="Phone Number" name="phoneNumber">
-              <Input disabled readOnly /> {/* Input field for phone number, read-only */}
+              <Input disabled readOnly />
             </Form.Item>
             <Form.Item label="City" name="city">
-              <Input disabled={!isEditing} /> {/* Input field for city */}
+              <Input disabled={!isEditing} />
             </Form.Item>
             <Form.Item label="State" name="state">
-              <Input disabled={!isEditing} /> {/* Input field for state */}
+              <Input disabled={!isEditing} />
             </Form.Item>
             <Form.Item label="Country" name="country">
-              <Input disabled={!isEditing} /> {/* Input field for country */}
+              <Input disabled={!isEditing} />
             </Form.Item>
             <Form.Item label="Pincode" name="pincode">
-              <Input disabled={!isEditing} /> {/* Input field for pincode */}
+              <Input disabled={!isEditing} />
             </Form.Item>
           </Form>
 
           <div className={styles.actionButtons}>
             {isEditing ? (
               <>
-                <Button type="primary" onClick={handleSaveProfile}> {/* Save profile button */}
+                <Button type="primary" onClick={handleSaveProfile}>
+                  {" "}
+                  {/* Save profile button */}
                   Save Profile
                 </Button>
-                <Button onClick={() => setIsEditing(false)}>Cancel</Button> {/* Cancel editing */}
-                <Button onClick={() => setPasswordModalVisible(true)}> {/* Change password button */}
+                <Button onClick={() => setIsEditing(false)}>Cancel</Button>{" "}
+                {/* Cancel editing */}
+                <Button onClick={() => setPasswordModalVisible(true)}>
+                  {" "}
+                  {/* Change password button */}
                   Change Password
                 </Button>
               </>
             ) : (
-              <Button type="primary" onClick={handleEditProfile}> {/* Edit profile button */}
+              <Button type="primary" onClick={handleEditProfile}>
+                {" "}
+                {/* Edit profile button */}
                 Edit Profile
               </Button>
             )}
@@ -351,7 +405,7 @@ const UserDashboard: React.FC = () => {
             columns={columns} // Column definitions
             rowKey="id" // Unique key for rows
             className={styles.tableContainer}
-            scroll={{x: "100%"}}
+            scroll={{ x: "100%" }}
           />
         </Tabs.TabPane>
       </Tabs>
@@ -370,7 +424,9 @@ const UserDashboard: React.FC = () => {
           <Form.Item
             label="Current Password"
             name="currentPassword"
-            rules={[{ required: true, message: "Please enter your current password" }]} // Validation rule
+            rules={[
+              { required: true, message: "Please enter your current password" },
+            ]} // Validation rule
           >
             <Input.Password />
           </Form.Item>
@@ -379,7 +435,10 @@ const UserDashboard: React.FC = () => {
             name="newPassword"
             rules={[
               { required: true, message: "Please enter your new password" }, // Validation rule
-              { min: 8, message: "Password must be at least 8 characters long" } // Password length rule
+              {
+                min: 8,
+                message: "Password must be at least 8 characters long",
+              }, // Password length rule
             ]}
           >
             <Input.Password />
