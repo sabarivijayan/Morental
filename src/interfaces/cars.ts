@@ -13,6 +13,7 @@ export interface CarCardProps {
 
 export interface RentableCar {
     id: string;
+    carId: string;
     car: {
       id: string;
       name: string;

@@ -14,39 +14,24 @@ const CarDisplay = () => {
   const router = useRouter();
 
   // Fetch all rentable cars with the query
-  const { data, loading, error } = useQuery(GET_RENTABLE_CARS);
+  // Fetch all rentable cars with the query
+const { data, loading, error } = useQuery(GET_RENTABLE_CARS);
 
-  if (loading) return <p>Loading cars, please wait...</p>;
-  if (error) return <p>Error loading cars: {error.message}</p>;
+if (loading) return <p>Loading cars, please wait...</p>;
+if (error) return <p>Error loading cars: {error.message}</p>;
 
-  // Define rentableCars with RentableCar type or an empty array
-  const rentableCars: RentableCar[] = data?.getRentableCars || [];
+// Access the rentableCars array from the PaginatedRentableCars object
+const rentableCars: RentableCar[] = data?.getRentableCars?.rentableCars || [];
 
-  // Handler to navigate to the car-detail page
-  const handleRentNowClick = (carId: string) => {
-    router.push(`/car-detail/${carId}`); // Redirect to the car-detail page with carId
-  };
+// Handler to navigate to the car-detail page
+const handleRentNowClick = (carId: string) => {
+  router.push(`/car-detail/${carId}`); // Redirect to the car-detail page with carId
+};
 
-  // Render car cards in Swiper for smaller screens
-  const renderCarCardsInSwiper = rentableCars.map((rentableCar: RentableCar) => (
-    <SwiperSlide key={rentableCar.id}>
-      <CarCard
-        title={rentableCar.car.name}
-        category={rentableCar.car.type}
-        imageUrl={rentableCar.car.primaryImageUrl}
-        fuelCapacity={rentableCar.car.fuelType}
-        transmission={rentableCar.car.transmissionType}
-        capacity={rentableCar.car.numberOfSeats}
-        price={`₹${rentableCar.pricePerDay}`}
-        onRentNow={() => handleRentNowClick(rentableCar.id)} // Pass the car ID to the handler
-      />
-    </SwiperSlide>
-  ));
-
-  // Render car cards in grid for larger screens
-  const renderCarCardsInGrid = rentableCars.map((rentableCar: RentableCar) => (
+// Render car cards in Swiper for smaller screens
+const renderCarCardsInSwiper = rentableCars.map((rentableCar: RentableCar) => (
+  <SwiperSlide key={rentableCar.id}>
     <CarCard
-      key={rentableCar.id}
       title={rentableCar.car.name}
       category={rentableCar.car.type}
       imageUrl={rentableCar.car.primaryImageUrl}
@@ -54,9 +39,26 @@ const CarDisplay = () => {
       transmission={rentableCar.car.transmissionType}
       capacity={rentableCar.car.numberOfSeats}
       price={`₹${rentableCar.pricePerDay}`}
-      onRentNow={() => handleRentNowClick(rentableCar.id)} // Pass the car ID to the handler
+      onRentNow={() => handleRentNowClick(rentableCar.id)}
     />
-  ));
+  </SwiperSlide>
+));
+
+// Render car cards in grid for larger screens
+const renderCarCardsInGrid = rentableCars.map((rentableCar: RentableCar) => (
+  <CarCard
+    key={rentableCar.id}
+    title={rentableCar.car.name}
+    category={rentableCar.car.type}
+    imageUrl={rentableCar.car.primaryImageUrl}
+    fuelCapacity={rentableCar.car.fuelType}
+    transmission={rentableCar.car.transmissionType}
+    capacity={rentableCar.car.numberOfSeats}
+    price={`₹${rentableCar.pricePerDay}`}
+    onRentNow={() => handleRentNowClick(rentableCar.id)}
+  />
+));
+
 
   const handleViewAllClick = () => {
     router.push("/all-cars"); // Redirect to the all cars page

@@ -69,10 +69,40 @@ export const GET_AVAILABLE_CARS = gql`
           transmissionType
           description
           quantity
-          manufacturerId
+          manufacturer {
+            id
+            name
+            country
+          }
           primaryImageUrl
           secondaryImagesUrls
           year
+        }
+      }
+    }
+  }
+`;
+
+
+export const GET_RENTABLE_CARS = gql`
+  query GetRentableCars($offset: Int, $limit: Int) {
+    getRentableCars(offset: $offset, limit: $limit) {
+      totalCount
+      rentableCars {
+        id
+        carId
+        pricePerDay
+        availableQuantity
+        car {           
+          id
+          name
+          type
+          description
+          year
+          transmissionType
+          fuelType
+          numberOfSeats
+          primaryImageUrl
           manufacturer {
             id
             name
@@ -84,33 +114,6 @@ export const GET_AVAILABLE_CARS = gql`
   }
 `;
 
-
-export const GET_RENTABLE_CARS = gql`
-  query GetRentableCars {
-    getRentableCars {
-      id
-      carId
-      pricePerDay
-      availableQuantity
-      car {           
-        id
-        name
-        type
-        description
-        year
-        transmissionType
-        fuelType
-        numberOfSeats
-        primaryImageUrl
-        manufacturer {
-          id
-          name
-          country
-        }
-      }
-    }
-  }
-`;
 
 export const FETCH_BOOKINGS = gql`
   query FetchBookings {

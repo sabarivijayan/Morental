@@ -39,18 +39,21 @@ const CarDisplay = ({ filters, pickUpDate, dropOffDate }: { filters: any, pickUp
   if (carLoading || bookingLoading) return <Spin tip="Loading cars and bookings..." />;
   if (carError || bookingError) return <Alert message="Error loading data. Please enter a date in the date picker." type="error" />;
 
-  const rentableCars: RentableCar[] = carData?.getAvailableCars?.data || carData?.getRentableCars || [];
+  // Handle the different response structures from the queries
+  const rentableCars: RentableCar[] = shouldUseAvailableCarsQuery 
+    ? (carData?.getAvailableCars?.data || [])
+    : (carData?.getRentableCars?.rentableCars || []);
+    
   const bookings = bookingData?.fetchBookings?.data || [];
 
-  // Function to filter out cars with conflicting bookings
+  // Function to filter out cars with conflicting bookings - now using carId
   const filterCarsByBookingConflicts = (cars: RentableCar[], pickUpDate: string, dropOffDate: string) => {
     const pickUp = new Date(pickUpDate);
     const dropOff = new Date(dropOffDate);
 
-    return cars.filter((car) => {
-      // Find bookings for this car
-      const carBookings = bookings.filter((booking: any) => booking.carId === car.car.id);
-
+    return cars.filter((rentableCar) => {
+      // Find bookings for this car using carId
+      const carBookings = bookings.filter((booking: any) => booking.carId === rentableCar.id);
       // If no bookings for this car, it's available
       if (!carBookings.length) return true;
 
@@ -67,7 +70,7 @@ const CarDisplay = ({ filters, pickUpDate, dropOffDate }: { filters: any, pickUp
   // Apply filtering based on bookings if dates are provided
   const filteredCars = pickUpDate && dropOffDate ? filterCarsByBookingConflicts(rentableCars, pickUpDate, dropOffDate) : rentableCars;
 
-  // Handle rent now click
+  // Handle rent now click - now using rentableCar.carId
   const handleRentNowClick = (carId: string) => {
     router.push(`/car-detail/${carId}`);
   };
