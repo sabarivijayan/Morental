@@ -43,9 +43,9 @@ const Navbar: React.FC = () => {
   // Filter cars based on search input
   useEffect(() => {
     if (carData && searchQuery) {
-      const cars = carData.getRentableCars || [];
-      const filtered = cars.filter((car: RentableCar) =>
-        car.car.name.toLowerCase().includes(searchQuery.toLowerCase())
+      const cars = carData.getRentableCars?.rentableCars || [];
+      const filtered = cars.filter((rentableCar: RentableCar) =>
+        rentableCar.car.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredCars(filtered);
       setDropdownVisible(filtered.length > 0); // Show dropdown if there are filtered results
